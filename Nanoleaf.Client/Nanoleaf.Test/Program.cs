@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using Nanoleaf.Client;
 
 namespace Nanoleaf.Test
@@ -10,9 +11,17 @@ namespace Nanoleaf.Test
             Console.WriteLine("Hello World!");
             var client = new NanoleafClient("http://192.168.0.101:16021");
 
-            client.TurnOn();
+            var state = client.GetBrightnessInfo().Result;
+            //client.SetBrightness(50, 15);
+            //client.IncrementBrightness(50);
 
-            Console.ReadKey();
+            var test = client.SetBrightness(35);
+            Thread.Sleep(1000);
+            Console.WriteLine(state.Value);
+            Console.WriteLine(state.Maximum);
+            Console.WriteLine(state.Minimum);
+
+            //Console.ReadKey();
         }
     }
 }

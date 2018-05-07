@@ -1,28 +1,28 @@
-﻿using System.Runtime.Serialization;
+﻿using Newtonsoft.Json;
 
 namespace Nanoleaf.Client.Models.Responses
 {
     public class Info
     {
-        [DataMember(Name = "name")]
+        [JsonProperty("name")]
         public string Name { get; set; }
 
-        [DataMember(Name = "serialNo")]
+        [JsonProperty("serialNo")]
         public string SerialNumber { get; set; }
 
-        [DataMember(Name = "manufacturer")]
+        [JsonProperty("manufacturer")]
         public string Manufacturer { get; set; }
 
-        [DataMember(Name = "firmwareVersion")]
+        [JsonProperty("firmwareVersion")]
         public string FirmwareVersion { get; set; }
 
-        [DataMember(Name = "model")]
+        [JsonProperty("model")]
         public string Model { get; set; }
 
-        [DataMember(Name = "state")]
+        [JsonProperty("state")]
         public State State { get; set; }
 
-        [DataMember(Name = "effects")]
+        [JsonProperty("effects")]
         public Effects Effects { get; set; }
     }
 }

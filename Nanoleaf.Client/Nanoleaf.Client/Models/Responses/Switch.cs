@@ -1,10 +1,10 @@
-﻿using System.Runtime.Serialization;
+﻿using Newtonsoft.Json;
 
 namespace Nanoleaf.Client.Models.Responses
 {
     public class Switch
     {
-        [DataMember(Name = "on")]
+        [JsonProperty("on")]
         public bool SwitchedOn { get; set; }
     }
 }

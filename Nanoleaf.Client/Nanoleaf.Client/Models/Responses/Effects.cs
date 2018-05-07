@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
-using System.Runtime.Serialization;
+using Newtonsoft.Json;
 
 namespace Nanoleaf.Client.Models.Responses
 {
     public class Effects
     {
-        [DataMember(Name = "select")]
+        [JsonProperty("select")]
         public string SelectedEffect { get; set; }
 
-        [DataMember(Name = "effectsList")]
+        [JsonProperty("effectsList")]
         public List<string> EffectList { get; set; }
     }
 }

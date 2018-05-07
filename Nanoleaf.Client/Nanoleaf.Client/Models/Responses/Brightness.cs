@@ -1,16 +1,16 @@
-﻿using System.Runtime.Serialization;
+﻿using Newtonsoft.Json;
 
 namespace Nanoleaf.Client.Models.Responses
 {
     public class Brightness
     {
-        [DataMember(Name = "value")]
+        [JsonProperty("value")]
         public int Value { get; set; }
 
-        [DataMember(Name = "max")]
+        [JsonProperty("max")]
         public int Maximum { get; set; }
 
-        [DataMember(Name = "min")]
+        [JsonProperty("min")]
         public int Minimum { get; set; }
     }
 }

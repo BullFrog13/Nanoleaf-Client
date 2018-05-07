@@ -1,8 +1,7 @@
-﻿using System.Runtime.Serialization;
+﻿using Newtonsoft.Json;
 
 namespace Nanoleaf.Client.Models
 {
-    [DataContract(Name = "state")]
     public class OnOffRequest
     {
         public OnOffRequest(bool value)
@@ -10,7 +9,7 @@ namespace Nanoleaf.Client.Models
             Value = value;
         }
 
-        [DataMember(Name = "on")]
+        [JsonProperty("on")]
         public bool Value { get; }
     }
 }
