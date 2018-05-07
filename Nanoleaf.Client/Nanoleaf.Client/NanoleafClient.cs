@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -6,6 +7,8 @@ using Nanoleaf.Client.Helpers;
 using Nanoleaf.Client.Interfaces;
 using Nanoleaf.Client.Models;
 using Nanoleaf.Client.Models.Requests.Brightness;
+using Nanoleaf.Client.Models.Requests.ColorTemperature;
+using Nanoleaf.Client.Models.Requests.Effects;
 using Nanoleaf.Client.Models.Requests.Hue;
 using Nanoleaf.Client.Models.Requests.Saturation;
 using Nanoleaf.Client.Models.Responses;
@@ -325,6 +328,143 @@ namespace Nanoleaf.Client
             HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
 
             using (var response = await PutAsync("state/", content))
+            {
+                // TODO handle status codes
+            }
+        }
+
+        #endregion
+
+        #region Color Temperature
+
+        public async Task<ColorTemperature> GetTemperatureInfo()
+        {
+            using (var response = await GetAsync("state/ct"))
+            {
+                var responseString = await response.Content.ReadAsStringAsync();
+                ColorTemperature colorTemperatureInfo = JsonConvert.DeserializeObject<ColorTemperature>(responseString);
+
+                return colorTemperatureInfo;
+            }
+        }
+
+        public async Task<int> GetColorTemperature()
+        {
+            using (var response = await GetAsync("state/ct/value"))
+            {
+                var responseString = await response.Content.ReadAsStringAsync();
+                int colorTemperature = JsonConvert.DeserializeObject<int>(responseString);
+
+                return colorTemperature;
+            }
+        }
+
+        public async Task<int> GetColorTemperatureMaxValue()
+        {
+            using (var response = await GetAsync("state/ct/max"))
+            {
+                var responseString = await response.Content.ReadAsStringAsync();
+                int colorTemperatureMaxValue = JsonConvert.DeserializeObject<int>(responseString);
+
+                return colorTemperatureMaxValue;
+            }
+        }
+
+        public async Task<int> GetColorTemperatureMinValue()
+        {
+            using (var response = await GetAsync("state/ct/min"))
+            {
+                var responseString = await response.Content.ReadAsStringAsync();
+                int colorTemperatureMinValue = JsonConvert.DeserializeObject<int>(responseString);
+
+                return colorTemperatureMinValue;
+            }
+        }
+
+        public async Task SetColorTemperature(int targetCt)
+        {
+            var request = new SetColorTemperatureModel(targetCt);
+
+            string json = Serializer.SerializeWithParentClassName(request);
+            HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            using (var response = await PutAsync("state/", content))
+            {
+                // TODO handle status codes
+            }
+        }
+
+        public async Task RaiseColorTemperature(int value)
+        {
+            var request = new IncrementColorTemperatureModel(value);
+
+            string json = Serializer.SerializeWithParentClassName(request);
+            HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            using (var response = await PutAsync("state/", content))
+            {
+                // TODO handle status codes
+            }
+        }
+
+        public async Task LowerColorTemperature(int value)
+        {
+            var request = new IncrementColorTemperatureModel(-value);
+
+            string json = Serializer.SerializeWithParentClassName(request);
+            HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            using (var response = await PutAsync("state/", content))
+            {
+                // TODO handle status codes
+            }
+        }
+
+        #endregion
+
+        public async Task<string> GetColorMode()
+        {
+            using (var response = await GetAsync("state/colorMode"))
+            {
+                var responseString = await response.Content.ReadAsStringAsync();
+                string colorMode = JsonConvert.DeserializeObject<string>(responseString);
+
+                return colorMode;
+            }
+        }
+
+        #region Effects
+
+        public async Task<string> GetCurrentEffect()
+        {
+            using (var response = await GetAsync("effects/select"))
+            {
+                var responseString = await response.Content.ReadAsStringAsync();
+                string effect = JsonConvert.DeserializeObject<string>(responseString);
+
+                return effect;
+            }
+        }
+
+        public async Task<List<string>> GetEffects()
+        {
+            using (var response = await GetAsync("effects/effectsList"))
+            {
+                var responseString = await response.Content.ReadAsStringAsync();
+                List<string> effectsList = JsonConvert.DeserializeObject<List<string>>(responseString);
+
+                return effectsList;
+            }
+        }
+
+        public async Task SetEffect(string effectName)
+        {
+            var request = new SelectEffectModel(effectName);
+
+            string json = JsonConvert.SerializeObject(request);
+            HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            using (var response = await PutAsync("effects/", content))
             {
                 // TODO handle status codes
             }

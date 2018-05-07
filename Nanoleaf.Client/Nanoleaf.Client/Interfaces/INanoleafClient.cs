@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Nanoleaf.Client.Models.Responses;
 
 namespace Nanoleaf.Client.Interfaces
@@ -62,6 +63,36 @@ namespace Nanoleaf.Client.Interfaces
         Task RaiseSaturation(int value);
 
         Task LowerSaturation(int value);
+
+        #endregion
+
+        #region Color Temperature
+
+        Task<ColorTemperature> GetTemperatureInfo();
+
+        Task<int> GetColorTemperature();
+
+        Task<int> GetColorTemperatureMaxValue();
+
+        Task<int> GetColorTemperatureMinValue();
+
+        Task SetColorTemperature(int targetCt);
+
+        Task RaiseColorTemperature(int value);
+
+        Task LowerColorTemperature(int value);
+
+        #endregion
+
+        Task<string> GetColorMode();
+
+        #region Effects
+
+        Task<string> GetCurrentEffect();
+
+        Task<List<string>> GetEffects();
+
+        Task SetEffect(string effectName);
 
         #endregion
     }
