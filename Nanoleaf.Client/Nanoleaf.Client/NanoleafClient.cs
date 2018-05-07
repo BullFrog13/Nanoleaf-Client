@@ -3,6 +3,8 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Nanoleaf.Client.Interfaces;
+using Nanoleaf.Client.Models;
+using Nanoleaf.Client.Models.Responses;
 using Newtonsoft.Json;
 
 namespace Nanoleaf.Client
@@ -27,20 +29,20 @@ namespace Nanoleaf.Client
 
         }
 
-        public void GetInfo()
+        public async Task<Info> GetInfo()
         {
+            using (var response = await GetAsync("/"))
+            {
+                var responseString = await response.Content.ReadAsStringAsync();
+                Info info = JsonConvert.DeserializeObject<Info>(responseString);
 
+                return info;
+            }
         }
 
         public async Task TurnOn()
         {
-            var request = new OnOffRequest
-            {
-                OnValue = new Value
-                {
-                    BoolValue = true
-                }
-            };
+            var request = new OnOffRequest(true);
 
             string json = JsonConvert.SerializeObject(request);
             HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -53,13 +55,8 @@ namespace Nanoleaf.Client
 
         public async Task TurnOff()
         {
-            var request = new OnOffRequest
-            {
-                OnValue = new Value
-                {
-                    BoolValue = false
-                }
-            };
+            var request = new OnOffRequest(false);
+
             string json = JsonConvert.SerializeObject(request);
             HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
 
