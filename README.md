@@ -1,7 +1,7 @@
 # Nanoleaf-Client
 
 Open source library for communication with your Nanoleaf Aurora.
-This library is available via NuGet package and supports only .NET Core projects. Library Covers all basic Nanoleaf API calls. You can get the info of your device.
+This library is available via NuGet package and supports only .NET Core projects. Library covers all basic Nanoleaf API calls. You can get the info of your device. This library is a part of something bigger. Yeelight support will arrive by the end of May 2018.
 
 # Nuget reference
 
