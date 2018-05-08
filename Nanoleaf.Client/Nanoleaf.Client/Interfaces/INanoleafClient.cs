@@ -8,9 +8,15 @@ namespace Nanoleaf.Client.Interfaces
     {
         Task<Info> GetInfo();
 
+        #region Power
+
+        Task<bool> GetPowerStatus();
+
         Task TurnOn();
 
         Task TurnOff();
+
+        #endregion
 
         #region Brightness
 

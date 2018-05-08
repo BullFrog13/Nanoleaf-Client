@@ -2,6 +2,7 @@
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Nanoleaf.Client.Exceptions;
 
 namespace Nanoleaf.Client
 {
@@ -9,7 +10,7 @@ namespace Nanoleaf.Client
     {
         public NanoleafHttpClient(string host, string token)
         {
-            BaseAddress = new Uri(host + "/api/v1/" + token);
+            BaseAddress = new Uri(host + "/api/v1/" + token + "/");
         }
 
         public async Task<string> SendGetRequest(string path = "")
@@ -69,19 +70,20 @@ namespace Nanoleaf.Client
             switch ((int)responseMessage.StatusCode)
             {
                 case 400:
-                    throw new NotImplementedException();
+                    throw new NanoleafHttpException("Error 400: Bad request!");
                 case 401:
-                    throw new NotImplementedException();
+                    throw new NanoleafUnauthorizedException($"Error 401: Not authorized! Provided an invalid token for this Aurora. Request path: {responseMessage.RequestMessage.RequestUri.AbsolutePath}");
                 case 403:
-                    throw new NotImplementedException();
+                    throw new NanoleafHttpException("Error 403: Forbidden!");
                 case 404:
-                    throw new NotImplementedException();
+                    throw new NanoleafResourceNotFoundException($"Error 404: Resource not found! Request Uri: {responseMessage.RequestMessage.RequestUri.AbsoluteUri}");
                 case 422:
-                    throw new NotImplementedException();
+                    throw new NanoleafHttpException("Error 422: Unprocessible Entity");
                 case 500:
-                    throw new NotImplementedException();
+                    throw new NanoleafHttpException("Error 500: Internal Server Error");
                 default:
-                    throw new NotImplementedException();
+                    throw new NanoleafHttpException("ERROR! UNKNOWN ERROR " + (int)responseMessage.StatusCode
+                                                                            + ". Please post an issue on the GitHub page: https://github.com/software-2/nanoleaf/issues");
             }
         }
     }

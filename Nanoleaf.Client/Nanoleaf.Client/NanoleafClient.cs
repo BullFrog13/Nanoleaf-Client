@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using Nanoleaf.Client.Helpers;
 using Nanoleaf.Client.Interfaces;
@@ -19,15 +17,13 @@ namespace Nanoleaf.Client
     public class NanoleafClient : HttpClient, INanoleafClient
     {
         private readonly NanoleafHttpClient _nanoleafHttpClient;
-        private string userToken = "NAVEVjtwZhnU31xEr4VMj3ewJTiit5JG/";
+        private readonly string _host;
+        private string _userToken;
 
-        public NanoleafClient(string host)
+        public NanoleafClient(string host, string userToken)
         {
-            BaseAddress = new Uri(host + "/api/v1/" + userToken);
-        }
-
-        public NanoleafClient(string host,  string userToken)
-        {
+            _host = host;
+            _userToken = userToken;
             _nanoleafHttpClient = new NanoleafHttpClient(host, userToken);
         }
 
