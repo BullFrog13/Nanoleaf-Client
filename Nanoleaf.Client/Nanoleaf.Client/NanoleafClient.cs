@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Net.Http;
 using System.Threading.Tasks;
 using Nanoleaf.Client.Helpers;
 using Nanoleaf.Client.Interfaces;
@@ -14,22 +13,13 @@ using Newtonsoft.Json;
 
 namespace Nanoleaf.Client
 {
-    public class NanoleafClient : HttpClient, INanoleafClient
+    public class NanoleafClient : INanoleafClient
     {
         private readonly NanoleafHttpClient _nanoleafHttpClient;
-        private readonly string _host;
-        private string _userToken;
 
         public NanoleafClient(string host, string userToken)
         {
-            _host = host;
-            _userToken = userToken;
             _nanoleafHttpClient = new NanoleafHttpClient(host, userToken);
-        }
-
-        public void AddUser()
-        {
-
         }
 
         public async Task<Info> GetInfo()
