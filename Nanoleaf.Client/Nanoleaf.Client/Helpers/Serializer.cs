@@ -6,7 +6,7 @@ namespace Nanoleaf.Client.Helpers
 {
     public class Serializer
     {
-        public static string SerializeWithParentClassName<T>(T o)
+        public static string Serialize<T>(T o)
         {
             var attr = o.GetType().GetCustomAttribute(typeof(JsonObjectAttribute)) as JsonObjectAttribute;
 

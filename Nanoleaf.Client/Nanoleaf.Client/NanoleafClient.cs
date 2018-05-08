@@ -18,17 +18,17 @@ namespace Nanoleaf.Client
 {
     public class NanoleafClient : HttpClient, INanoleafClient
     {
-        private string NanoleafIp;
+        private NanoleafHttpClient _nanoleafHttpClient;
         private string userToken = "NAVEVjtwZhnU31xEr4VMj3ewJTiit5JG/";
 
-        public NanoleafClient(string ip)
+        public NanoleafClient(string host)
         {
-            BaseAddress = new Uri(ip + "/api/v1/" + userToken);
+            BaseAddress = new Uri(host + "/api/v1/" + userToken);
         }
 
-        public NanoleafClient(string ip, string userToken)
+        public NanoleafClient(string host,  string userToken)
         {
-
+            _nanoleafHttpClient = new NanoleafHttpClient(host, userToken);
         }
 
         public void AddUser()
@@ -38,16 +38,18 @@ namespace Nanoleaf.Client
 
         public async Task<Info> GetInfo()
         {
-            using (var response = await GetAsync(""))
-            {
-                var responseString = await response.Content.ReadAsStringAsync();
-                Info info = JsonConvert.DeserializeObject<Info>(responseString);
-
-                return info;
-            }
+            return await _nanoleafHttpClient.SendGetRequest<Info>();
         }
 
-        // Todo rework to SetPowerMode method
+        #region Power
+
+        public async Task<bool> GetPowerStatus()
+        {
+            var powerStatus = await _nanoleafHttpClient.SendGetRequest<PowerStatus>("state/on");
+
+            return powerStatus.Value;
+        }
+
         public async Task TurnOn()
         {
             var request = new OnOffRequest(true);
@@ -73,6 +75,8 @@ namespace Nanoleaf.Client
                 // TODO handle status codes
             }
         }
+
+        #endregion
 
         #region Brightness
 
@@ -124,7 +128,7 @@ namespace Nanoleaf.Client
         {
             var request = new SetBrightnessModel(targetBrightness, time);
 
-            string json = Serializer.SerializeWithParentClassName(request);
+            string json = Serializer.Serialize(request);
             HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
 
             using (var response = await PutAsync("state/", content))
@@ -137,7 +141,7 @@ namespace Nanoleaf.Client
         {
             var request = new IncrementBrightnessModel(value);
 
-            string json = Serializer.SerializeWithParentClassName(request);
+            string json = Serializer.Serialize(request);
             HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
 
             using (var response = await PutAsync("state/", content))
@@ -150,7 +154,7 @@ namespace Nanoleaf.Client
         {
             var request = new IncrementBrightnessModel(-value);
 
-            string json = Serializer.SerializeWithParentClassName(request);
+            string json = Serializer.Serialize(request);
             HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
 
             using (var response = await PutAsync("state/", content))
@@ -211,7 +215,7 @@ namespace Nanoleaf.Client
         {
             var request = new SetHueModel(targetHue);
 
-            string json = Serializer.SerializeWithParentClassName(request);
+            string json = Serializer.Serialize(request);
             HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
 
             using (var response = await PutAsync("state/", content))
@@ -224,7 +228,7 @@ namespace Nanoleaf.Client
         {
             var request = new IncrementHueModel(value);
 
-            string json = Serializer.SerializeWithParentClassName(request);
+            string json = Serializer.Serialize(request);
             HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
 
             using (var response = await PutAsync("state/", content))
@@ -237,7 +241,7 @@ namespace Nanoleaf.Client
         {
             var request = new IncrementHueModel(-value);
 
-            string json = Serializer.SerializeWithParentClassName(request);
+            string json = Serializer.Serialize(request);
             HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
 
             using (var response = await PutAsync("state/", content))
@@ -298,7 +302,7 @@ namespace Nanoleaf.Client
         {
             var request = new SetSaturationModel(targetSat);
 
-            string json = Serializer.SerializeWithParentClassName(request);
+            string json = Serializer.Serialize(request);
             HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
 
             using (var response = await PutAsync("state/", content))
@@ -311,7 +315,7 @@ namespace Nanoleaf.Client
         {
             var request = new IncrementSaturationModel(value);
 
-            string json = Serializer.SerializeWithParentClassName(request);
+            string json = Serializer.Serialize(request);
             HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
 
             using (var response = await PutAsync("state/", content))
@@ -324,7 +328,7 @@ namespace Nanoleaf.Client
         {
             var request = new IncrementSaturationModel(-value);
 
-            string json = Serializer.SerializeWithParentClassName(request);
+            string json = Serializer.Serialize(request);
             HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
 
             using (var response = await PutAsync("state/", content))
@@ -385,7 +389,7 @@ namespace Nanoleaf.Client
         {
             var request = new SetColorTemperatureModel(targetCt);
 
-            string json = Serializer.SerializeWithParentClassName(request);
+            string json = Serializer.Serialize(request);
             HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
 
             using (var response = await PutAsync("state/", content))
@@ -398,7 +402,7 @@ namespace Nanoleaf.Client
         {
             var request = new IncrementColorTemperatureModel(value);
 
-            string json = Serializer.SerializeWithParentClassName(request);
+            string json = Serializer.Serialize(request);
             HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
 
             using (var response = await PutAsync("state/", content))
@@ -411,7 +415,7 @@ namespace Nanoleaf.Client
         {
             var request = new IncrementColorTemperatureModel(-value);
 
-            string json = Serializer.SerializeWithParentClassName(request);
+            string json = Serializer.Serialize(request);
             HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
 
             using (var response = await PutAsync("state/", content))
