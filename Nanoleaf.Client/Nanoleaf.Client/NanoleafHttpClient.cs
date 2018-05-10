@@ -6,7 +6,7 @@ using Nanoleaf.Client.Exceptions;
 
 namespace Nanoleaf.Client
 {
-    public class NanoleafHttpClient : HttpClient
+    internal class NanoleafHttpClient : HttpClient
     {
         public NanoleafHttpClient(string host, string token)
         {

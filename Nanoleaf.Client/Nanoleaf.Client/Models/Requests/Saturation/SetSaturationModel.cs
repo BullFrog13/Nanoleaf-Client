@@ -3,12 +3,9 @@
 namespace Nanoleaf.Client.Models.Requests.Saturation
 {
     [JsonObject(Title = "sat")]
-    public class SetSaturationModel
+    internal class SetSaturationModel
     {
-        public SetSaturationModel(int value)
-        {
-            Value = value;
-        }
+        public SetSaturationModel(int value) => Value = value;
 
         [JsonProperty("value")]
         public int Value { get; set; }

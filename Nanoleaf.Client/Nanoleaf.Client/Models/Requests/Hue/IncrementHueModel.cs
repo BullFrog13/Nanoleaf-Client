@@ -4,12 +4,9 @@ namespace Nanoleaf.Client.Models.Requests.Hue
 {
     [JsonObject(Title = "hue")]
 
-    public class IncrementHueModel
+    internal class IncrementHueModel
     {
-        public IncrementHueModel(int increment)
-        {
-            Increment = increment;
-        }
+        public IncrementHueModel(int increment) => Increment = increment;
 
         [JsonProperty("increment")]
         public int Increment { get; set; }
