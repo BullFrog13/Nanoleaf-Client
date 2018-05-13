@@ -6,99 +6,99 @@ namespace Nanoleaf.Client.Interfaces
 {
     public interface INanoleafClient
     {
-        Task<Info> GetInfo();
+        Task<Info> GetInfoAsync();
 
         #region Power
 
-        Task<bool> GetPowerStatus();
+        Task<bool> GetPowerStatusAsync();
 
-        Task TurnOn();
+        Task TurnOnAsync();
 
-        Task TurnOff();
+        Task TurnOffAsync();
 
         #endregion
 
         #region Brightness
 
-        Task<Brightness> GetBrightnessInfo();
+        Task<Brightness> GetBrightnessInfoAsync();
 
-        Task<int> GetBrightness();
+        Task<int> GetBrightnessAsync();
 
-        Task<int> GetBrightnessMaxValue();
+        Task<int> GetBrightnessMaxValueAsync();
 
-        Task<int> GetBrightnessMinValue();
+        Task<int> GetBrightnessMinValueAsync();
 
-        Task SetBrightness(int targetBrightness, int time = 0);
+        Task SetBrightnessAsync(int targetBrightness, int time = 0);
 
-        Task RaiseBrightness(int value);
+        Task RaiseBrightnessAsync(int value);
 
-        Task LowerBrightness(int value);
+        Task LowerBrightnessAsync(int value);
 
         #endregion
 
         #region Hue
 
-        Task<Hue> GetHueInfo();
+        Task<Hue> GetHueInfoAsync();
 
-        Task<int> GetHue();
+        Task<int> GetHueAsync();
 
-        Task<int> GetHueMaxValue();
+        Task<int> GetHueMaxValueAsync();
 
-        Task<int> GetHueMinValue();
+        Task<int> GetHueMinValueAsync();
 
-        Task SetHue(int targetHue);
+        Task SetHueAsync(int targetHue);
 
-        Task RaiseHue(int value);
+        Task RaiseHueAsync(int value);
 
-        Task LowerHue(int value);
+        Task LowerHueAsync(int value);
 
         #endregion
 
         #region Saturation
 
-        Task<Saturation> GetSaturationInfo();
+        Task<Saturation> GetSaturationInfoAsync();
 
-        Task<int> GetSaturation();
+        Task<int> GetSaturationAsync();
 
-        Task<int> GetSaturationMaxValue();
+        Task<int> GetSaturationMaxValueAsync();
 
-        Task<int> GetSaturationMinValue();
+        Task<int> GetSaturationMinValueAsync();
 
-        Task SetSaturation(int targetSat);
+        Task SetSaturationAsync(int targetSat);
 
-        Task RaiseSaturation(int value);
+        Task RaiseSaturationAsync(int value);
 
-        Task LowerSaturation(int value);
+        Task LowerSaturationAsync(int value);
 
         #endregion
 
         #region Color Temperature
 
-        Task<ColorTemperature> GetTemperatureInfo();
+        Task<ColorTemperature> GetTemperatureInfoAsync();
 
-        Task<int> GetColorTemperature();
+        Task<int> GetColorTemperatureAsync();
 
-        Task<int> GetColorTemperatureMaxValue();
+        Task<int> GetColorTemperatureMaxValueAsync();
 
-        Task<int> GetColorTemperatureMinValue();
+        Task<int> GetColorTemperatureMinValueAsync();
 
-        Task SetColorTemperature(int targetCt);
+        Task SetColorTemperatureAsync(int targetCt);
 
-        Task RaiseColorTemperature(int value);
+        Task RaiseColorTemperatureAsync(int value);
 
-        Task LowerColorTemperature(int value);
+        Task LowerColorTemperatureAsync(int value);
 
         #endregion
 
-        Task<string> GetColorMode();
+        Task<string> GetColorModeAsync();
 
         #region Effects
 
-        Task<string> GetCurrentEffect();
+        Task<string> GetCurrentEffectAsync();
 
-        Task<List<string>> GetEffects();
+        Task<List<string>> GetEffectsAsync();
 
-        Task SetEffect(string effectName);
+        Task SetEffectAsync(string effectName);
 
         #endregion
     }
