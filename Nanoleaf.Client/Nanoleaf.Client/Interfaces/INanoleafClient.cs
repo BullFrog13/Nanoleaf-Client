@@ -101,5 +101,9 @@ namespace Nanoleaf.Client.Interfaces
         Task SetEffectAsync(string effectName);
 
         #endregion
+
+        Task SetHsvAsync(int h, int s, int v);
+
+        Task SetRgbAsync(int r, int g, int b);
     }
 }

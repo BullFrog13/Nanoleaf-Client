@@ -1,8 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using Nanoleaf.Client.Colors;
 using Nanoleaf.Client.Helpers;
 using Nanoleaf.Client.Interfaces;
 using Nanoleaf.Client.Models;
+using Nanoleaf.Client.Models.Requests;
 using Nanoleaf.Client.Models.Requests.Brightness;
 using Nanoleaf.Client.Models.Requests.ColorTemperature;
 using Nanoleaf.Client.Models.Requests.Effects;
@@ -298,14 +301,6 @@ namespace Nanoleaf.Client
 
         #endregion
 
-        public async Task<string> GetColorModeAsync()
-        {
-            var response = await _nanoleafHttpClient.SendGetRequest("state/colorMode");
-            string colorMode = JsonConvert.DeserializeObject<string>(response);
-
-            return colorMode;
-        }
-
         #region Effects
 
         public async Task<string> GetCurrentEffectAsync()
@@ -333,5 +328,30 @@ namespace Nanoleaf.Client
         }
 
         #endregion
+
+        public async Task<string> GetColorModeAsync()
+        {
+            var response = await _nanoleafHttpClient.SendGetRequest("state/colorMode");
+            string colorMode = JsonConvert.DeserializeObject<string>(response);
+
+            return colorMode;
+        }
+
+        public async Task SetHsvAsync(int h, int s, int v)
+        {
+            var request = new HsvRequest(h, s, v);
+            string json = JsonConvert.SerializeObject(request);
+
+            await _nanoleafHttpClient.SendPutRequest(json, "state/");
+        }
+
+        public async Task SetRgbAsync(int r, int g, int b)
+        {
+            var hsv = ColorConverter.RgbToHsv(r, g, b);
+            var request = new HsvRequest(hsv.H, hsv.S, hsv.V);
+            string json = JsonConvert.SerializeObject(request);
+
+            await _nanoleafHttpClient.SendPutRequest(json, "state/");
+        }
     }
 }
