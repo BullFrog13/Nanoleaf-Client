@@ -8,6 +8,10 @@ namespace Nanoleaf.Client.Interfaces
     {
         Task<Info> GetInfoAsync();
 
+        Task<UserToken> AddUserAsync();
+
+        Task DeleteUserAsync(string userToken);
+
         #region Power
 
         Task<bool> GetPowerStatusAsync();

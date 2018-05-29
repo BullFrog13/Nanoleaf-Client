@@ -8,14 +8,21 @@ namespace Nanoleaf.Client
 {
     internal class NanoleafHttpClient : HttpClient
     {
+        private readonly string _host;
+        private readonly string _token;
+
         public NanoleafHttpClient(string host, string token)
         {
-            BaseAddress = new Uri(host + "/api/v1/" + token + "/");
+            _host = host;
+            _token = token;
+
+            BaseAddress = new Uri(host + "/api/v1/");
         }
 
         public async Task<string> SendGetRequest(string path = "")
         {
-            using (var responseMessage = await GetAsync(path))
+            var authorizedPath = _token + "/" + path;
+            using (var responseMessage = await GetAsync(authorizedPath))
             {
                 if (!responseMessage.IsSuccessStatusCode)
                 {
@@ -28,9 +35,10 @@ namespace Nanoleaf.Client
 
         public async Task SendPutRequest(string json, string path = "")
         {
+            var authorizedPath = _token + "/" + path;
             HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            using (var responseMessage = await PutAsync(path, content))
+            using (var responseMessage = await PutAsync(authorizedPath, content))
             {
                 if (!responseMessage.IsSuccessStatusCode)
                 {
@@ -39,7 +47,7 @@ namespace Nanoleaf.Client
             }
         }
 
-        public async Task<string> SendPostRequest(string json, string path = "")
+        public async Task<string> AddUserRequest(string path = "", string json = "")
         {
             HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
 
@@ -54,8 +62,10 @@ namespace Nanoleaf.Client
             }
         }
 
-        public async Task SendDeleteRequest(string path = "")
+        public async Task DeleteUserRequest(string path = "")
         {
+            BaseAddress = new Uri(_host + "/api/v1/");
+
             using (var responseMessage = await DeleteAsync(path))
             {
                 if (!responseMessage.IsSuccessStatusCode)

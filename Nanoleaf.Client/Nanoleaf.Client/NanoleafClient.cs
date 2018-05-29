@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using DeviceDiscovery;
 using Nanoleaf.Client.Colors;
 using Nanoleaf.Client.Helpers;
 using Nanoleaf.Client.Interfaces;
@@ -20,6 +20,11 @@ namespace Nanoleaf.Client
     {
         private readonly NanoleafHttpClient _nanoleafHttpClient;
 
+        public NanoleafClient(string host)
+        {
+
+        }
+
         public NanoleafClient(string host, string userToken)
         {
             _nanoleafHttpClient = new NanoleafHttpClient(host, userToken);
@@ -32,6 +37,23 @@ namespace Nanoleaf.Client
 
             return info;
         }
+
+        #region User
+
+        public async Task<UserToken> AddUserAsync()
+        {
+            var response = await _nanoleafHttpClient.AddUserRequest("new/");
+            UserToken token = JsonConvert.DeserializeObject<UserToken>(response);
+
+            return token;
+        }
+
+        public async Task DeleteUserAsync(string userToken)
+        {
+            await _nanoleafHttpClient.DeleteUserRequest(userToken + "/");
+        }
+
+        #endregion
 
         #region Power
 
