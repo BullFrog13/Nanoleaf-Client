@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using DeviceDiscovery;
 using DeviceDiscovery.Models;
+using Nanoleaf.Client.Discovery;
 
 namespace Nanoleaf.Client
 {
@@ -14,19 +15,13 @@ namespace Nanoleaf.Client
             _discoveryService = new DiscoveryService();
         }
 
-        public List<NanoleafClient> DiscoverNanoleafs()
+        public List<NanoleafClient> DiscoverNanoleafs(NanoleafDiscoveryRequest discoveryRequest)
         {
-            var nanoleafDevices = _discoveryService.LocateDevices(new MSearchRequest
-            {
-                Timeout = TimeSpan.FromSeconds(5),
-                MulsticastPort = 1900,
-                ST = SearchTarget.Nanoleaf,
-                UnicastPort = 1901
-            });
+            var nanoleafDevices = _discoveryService.LocateDevices(discoveryRequest);
 
             var nanoleafClients = new List<NanoleafClient>();
 
-            foreach (var device in nanoleafDevices)
+            foreach (MSearchResponse device in nanoleafDevices)
             {
                 nanoleafClients.Add(new NanoleafClient(device.Location.OriginalString));
             }

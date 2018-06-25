@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using DeviceDiscovery;
 using Nanoleaf.Client.Colors;
 using Nanoleaf.Client.Helpers;
 using Nanoleaf.Client.Interfaces;
