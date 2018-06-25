@@ -22,12 +22,17 @@ namespace Nanoleaf.Client
 
         public NanoleafClient(string host)
         {
-
+            _nanoleafHttpClient = new NanoleafHttpClient(host);
         }
 
         public NanoleafClient(string host, string userToken)
         {
             _nanoleafHttpClient = new NanoleafHttpClient(host, userToken);
+        }
+
+        public void Authorize(string token)
+        {
+            _nanoleafHttpClient.AuthorizeRequests(token);
         }
 
         public async Task<Info> GetInfoAsync()
@@ -42,8 +47,8 @@ namespace Nanoleaf.Client
 
         public async Task<UserToken> AddUserAsync()
         {
-            var response = await _nanoleafHttpClient.AddUserRequest("new/");
-            UserToken token = JsonConvert.DeserializeObject<UserToken>(response);
+            var response = await _nanoleafHttpClient.AddUserRequestAsync();
+            var token = JsonConvert.DeserializeObject<UserToken>(response);
 
             return token;
         }

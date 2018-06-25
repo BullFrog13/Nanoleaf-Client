@@ -9,14 +9,19 @@ namespace Nanoleaf.Client
     internal class NanoleafHttpClient : HttpClient
     {
         private readonly string _host;
-        private readonly string _token;
+        private string _token;
 
-        public NanoleafHttpClient(string host, string token)
+        public NanoleafHttpClient(string host, string token = "")
         {
             _host = host;
             _token = token;
 
             BaseAddress = new Uri(host + "/api/v1/");
+        }
+
+        public void AuthorizeRequests(string token)
+        {
+            _token = token;
         }
 
         public async Task<string> SendGetRequest(string path = "")
@@ -47,11 +52,9 @@ namespace Nanoleaf.Client
             }
         }
 
-        public async Task<string> AddUserRequest(string path = "", string json = "")
+        public async Task<string> AddUserRequestAsync()
         {
-            HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
-
-            using (var responseMessage = await PostAsync(path, content))
+            using (var responseMessage = await PostAsync("new/", null))
             {
                 if (!responseMessage.IsSuccessStatusCode)
                 {

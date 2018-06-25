@@ -7,11 +7,11 @@ namespace Nanoleaf.Client
 {
     public class NanoleafDiscovery
     {
-        private DiscoveryService _discoveryService;
+        private readonly DiscoveryService _discoveryService;
 
-        public NanoleafDiscovery(DiscoveryService discoveryService)
+        public NanoleafDiscovery()
         {
-            _discoveryService = discoveryService;
+            _discoveryService = new DiscoveryService();
         }
 
         public List<NanoleafClient> DiscoverNanoleafs()
@@ -23,14 +23,15 @@ namespace Nanoleaf.Client
                 ST = SearchTarget.Nanoleaf,
                 UnicastPort = 1901
             });
-        }
 
-        private List<NanoleafClient> Test(List<MSearchResponse> responses)
-        {
-            foreach (var response in responses)
+            var nanoleafClients = new List<NanoleafClient>();
+
+            foreach (var device in nanoleafDevices)
             {
-                NanoleafClient client = new NanoleafClient(response.Location.Host);
+                nanoleafClients.Add(new NanoleafClient(device.Location.OriginalString));
             }
+
+            return nanoleafClients;
         }
     }
 }

@@ -10,6 +10,8 @@ namespace Nanoleaf.Client.Interfaces
 
         Task<UserToken> AddUserAsync();
 
+        void Authorize(string token);
+
         Task DeleteUserAsync(string userToken);
 
         #region Power
