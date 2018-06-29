@@ -1,56 +1,64 @@
 ﻿using System.IO;
+using System.Linq;
 using Nanoleaf.Client.Configuration;
+using Nanoleaf.Client.Core;
 using Newtonsoft.Json;
 
 namespace Nanoleaf.Client.Authentication
 {
     public class AuthManager
     {
-        private NanoleafUsers CachedInfo { get; set; }
-
-        private void UpdateCache()
+        public NanoleafUsers GetAllAuthInfo()
         {
-            CachedInfo = JsonConvert.DeserializeObject<NanoleafUsers>(File.ReadAllText(Directory.GetCurrentDirectory() + "\\app.json"));
-        }
-
-
-        public NanoleafUsers GetAllInfo()
-        {
-            var testObject = JsonConvert.DeserializeObject<NanoleafUsers>(File.ReadAllText(Directory.GetCurrentDirectory() + "\\app.json"));
-
-            CachedInfo = testObject;
+            var testObject = JsonConvert.DeserializeObject<NanoleafUsers>(File.ReadAllText(Directory.GetCurrentDirectory() + Constants.AuthConfigPath));
 
             return testObject;
         }
 
-        public void AddNanoleafDevice(string id)
+        public void AddNanoleafIfNotExists(string id)
         {
-            if (CachedInfo == null)
+            var info = GetAllAuthInfo();
+
+            if (!info.Nanoleafs.Exists(x => x.Id.Equals(id)))
             {
-                CachedInfo = JsonConvert.DeserializeObject<NanoleafUsers>(File.ReadAllText(Directory.GetCurrentDirectory() + "\\app.json"));
+                info.Nanoleafs.Add(new Configuration.Nanoleaf
+                {
+                    Id = id
+                });
+
+                Save(info);
             }
-
-            CachedInfo.Nanoleafs.Add(new Configuration.Nanoleaf
-            {
-                Id = id
-            });
-
-            File.WriteAllText(Directory.GetCurrentDirectory() + "\\app.json", JsonConvert.SerializeObject(CachedInfo));
         }
 
         public void DeleteNanoleafDevice(string id)
         {
+            var info = GetAllAuthInfo();
+            info.Nanoleafs = info.Nanoleafs.Where(x => x.Id.Equals(id)).ToList();
 
+            Save(info);
         }
 
         public void AddUser(string nanoleafId, string token)
         {
+            var info = GetAllAuthInfo();
+            var device = info.Nanoleafs.FirstOrDefault(x => x.Id.Equals(nanoleafId));
+            device?.UserToken.Add(token);
 
+            Save(info);
         }
 
         public void DeleteUser(string nanoleafId, string token)
         {
+            var info = GetAllAuthInfo();
+            var device = info.Nanoleafs.FirstOrDefault(x => x.Id.Equals(nanoleafId));
+            device?.UserToken.RemoveAll(x => x.Equals(token));
 
+            Save(info);
+        }
+
+        private void Save(NanoleafUsers configuration)
+        {
+            File.WriteAllText(Directory.GetCurrentDirectory() + Constants.AuthConfigPath, JsonConvert.SerializeObject(configuration));
         }
     }
 }

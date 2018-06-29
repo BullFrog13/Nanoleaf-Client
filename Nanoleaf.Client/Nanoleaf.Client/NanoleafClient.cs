@@ -18,16 +18,18 @@ namespace Nanoleaf.Client
     public class NanoleafClient : INanoleafClient
     {
         private readonly NanoleafHttpClient _nanoleafHttpClient;
+        private string Id;
 
-        public NanoleafClient(string host)
+        public NanoleafClient(string host, string usn)
         {
             _nanoleafHttpClient = new NanoleafHttpClient(host);
+            Id = usn;
         }
 
-        public NanoleafClient(string host, string userToken)
+        /*public NanoleafClient(string host, string userToken)
         {
             _nanoleafHttpClient = new NanoleafHttpClient(host, userToken);
-        }
+        }*/
 
         public void Authorize(string token)
         {
