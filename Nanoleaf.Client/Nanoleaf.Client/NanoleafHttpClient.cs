@@ -2,7 +2,6 @@
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using Nanoleaf.Client.Authentication;
 using Nanoleaf.Client.Exceptions;
 
 namespace Nanoleaf.Client
@@ -63,7 +62,7 @@ namespace Nanoleaf.Client
                 }
                 else
                 {
-                    new AuthManager().
+                    //new AuthManager()
                 }
 
                 return await responseMessage.Content.ReadAsStringAsync();
