@@ -16,12 +16,11 @@ var client = new NanoleafClient("http://<your_device_ip>:16021", "<USER_TOKEN>")
 # Disclaimer
 
 Library is still in WIP state. You might experience bugs.
-I can see some people are looking for the Nanoleaf implementation.
 I hope you enjoy my work and I would appreciate any comments regarding my work.
-Email: 13heavyweather@gmail.com
+If there are any issues please open an issue.
 
-# Work TODO
+# TODO
 
 1. Implement Error HttpCode handling
-2. Add Nanoleaf Discovery
+2. Add Nanoleaf Discovery (DONE)
 3. Add support for new users
