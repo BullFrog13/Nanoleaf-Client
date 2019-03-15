@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using DeviceDiscovery.Models;
-using Nanoleaf.Client;
 using Nanoleaf.Client.Discovery;
 
 namespace Nanoleaf.Test
@@ -18,7 +17,7 @@ namespace Nanoleaf.Test
 
             var discoveredNanoleafs = nanoleafDiscovery.DiscoverNanoleafs(request);
             var nanoleaf = discoveredNanoleafs.FirstOrDefault();
-            nanoleaf?.Authorize("osKxD4Ao3LalXplgtS6AYAR7KC7tMd5A");
+            nanoleaf?.Authorize("qEQ8ZLcPuOVesarDXIW6eGQQd1Hhn1d9");
 
             var test = nanoleaf.GetEffectsAsync().Result;
 
