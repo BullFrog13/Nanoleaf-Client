@@ -3,7 +3,7 @@
 namespace Nanoleaf.Client.Models.Requests.Brightness
 {
     [JsonObject(Title = "brightness")]
-    public class SetBrightnessModel
+    internal class SetBrightnessModel
     {
         public SetBrightnessModel(int value, int duration)
         {

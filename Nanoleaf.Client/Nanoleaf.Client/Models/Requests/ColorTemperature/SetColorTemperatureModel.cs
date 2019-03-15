@@ -4,12 +4,9 @@ namespace Nanoleaf.Client.Models.Requests.ColorTemperature
 {
     [JsonObject(Title = "ct")]
 
-    public class SetColorTemperatureModel
+    internal class SetColorTemperatureModel
     {
-        public SetColorTemperatureModel(int value)
-        {
-            Value = value;
-        }
+        public SetColorTemperatureModel(int value) => Value = value;
 
         [JsonProperty("value")]
         public int Value { get; set; }

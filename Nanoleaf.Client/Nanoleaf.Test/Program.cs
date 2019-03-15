@@ -1,5 +1,7 @@
 ﻿using System;
-using Nanoleaf.Client;
+using System.Linq;
+using DeviceDiscovery.Models;
+using Nanoleaf.Client.Discovery;
 
 namespace Nanoleaf.Test
 {
@@ -7,9 +9,22 @@ namespace Nanoleaf.Test
     {
         static void Main()
         {
-            var client = new NanoleafClient("http://192.168.0.101:16021", "NAVEVjtwZhnU31xEr4VMj3ewJTiit5JG");
+            var nanoleafDiscovery = new NanoleafDiscovery();
+            var request = new NanoleafDiscoveryRequest
+            {
+                ST = SearchTarget.Nanoleaf
+            };
 
-            var test = client.SetBrightness(10, 10);
+            var discoveredNanoleafs = nanoleafDiscovery.DiscoverNanoleafs(request);
+            var nanoleaf = discoveredNanoleafs.FirstOrDefault();
+            nanoleaf?.Authorize("qEQ8ZLcPuOVesarDXIW6eGQQd1Hhn1d9");
+
+            var test = nanoleaf.GetEffectsAsync().Result;
+
+            foreach (var action in test)
+            {
+                Console.WriteLine(action);
+            }
 
             Console.ReadKey();
         }

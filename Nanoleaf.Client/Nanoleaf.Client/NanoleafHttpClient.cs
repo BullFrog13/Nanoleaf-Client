@@ -6,16 +6,28 @@ using Nanoleaf.Client.Exceptions;
 
 namespace Nanoleaf.Client
 {
-    public class NanoleafHttpClient : HttpClient
+    internal class NanoleafHttpClient : HttpClient
     {
-        public NanoleafHttpClient(string host, string token)
+        private readonly string _host;
+        private string _token;
+
+        public NanoleafHttpClient(string host, string token = "")
         {
-            BaseAddress = new Uri(host + "/api/v1/" + token + "/");
+            _host = host;
+            _token = token;
+
+            BaseAddress = new Uri(host + "/api/v1/");
+        }
+
+        public void AuthorizeRequests(string token)
+        {
+            _token = token;
         }
 
         public async Task<string> SendGetRequest(string path = "")
         {
-            using (var responseMessage = await GetAsync(path))
+            var authorizedPath = _token + "/" + path;
+            using (var responseMessage = await GetAsync(authorizedPath))
             {
                 if (!responseMessage.IsSuccessStatusCode)
                 {
@@ -28,9 +40,10 @@ namespace Nanoleaf.Client
 
         public async Task SendPutRequest(string json, string path = "")
         {
+            var authorizedPath = _token + "/" + path;
             HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            using (var responseMessage = await PutAsync(path, content))
+            using (var responseMessage = await PutAsync(authorizedPath, content))
             {
                 if (!responseMessage.IsSuccessStatusCode)
                 {
@@ -39,23 +52,27 @@ namespace Nanoleaf.Client
             }
         }
 
-        public async Task<string> SendPostRequest(string json, string path = "")
+        public async Task<string> AddUserRequestAsync()
         {
-            HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
-
-            using (var responseMessage = await PostAsync(path, content))
+            using (var responseMessage = await PostAsync("new/", null))
             {
                 if (!responseMessage.IsSuccessStatusCode)
                 {
                     HandleNanoleafErrorStatusCodes(responseMessage);
+                }
+                else
+                {
+                    //new AuthManager()
                 }
 
                 return await responseMessage.Content.ReadAsStringAsync();
             }
         }
 
-        public async Task SendDeleteRequest(string path = "")
+        public async Task DeleteUserRequest(string path = "")
         {
+            BaseAddress = new Uri(_host + "/api/v1/");
+
             using (var responseMessage = await DeleteAsync(path))
             {
                 if (!responseMessage.IsSuccessStatusCode)

@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Nanoleaf.Client.Colors;
 using Nanoleaf.Client.Helpers;
 using Nanoleaf.Client.Interfaces;
 using Nanoleaf.Client.Models;
+using Nanoleaf.Client.Models.Requests;
 using Nanoleaf.Client.Models.Requests.Brightness;
 using Nanoleaf.Client.Models.Requests.ColorTemperature;
 using Nanoleaf.Client.Models.Requests.Effects;
@@ -17,12 +19,23 @@ namespace Nanoleaf.Client
     {
         private readonly NanoleafHttpClient _nanoleafHttpClient;
 
-        public NanoleafClient(string host, string userToken)
+
+        public NanoleafClient(string host)
         {
-            _nanoleafHttpClient = new NanoleafHttpClient(host, userToken);
+            _nanoleafHttpClient = new NanoleafHttpClient(host);
         }
 
-        public async Task<Info> GetInfo()
+        /*public NanoleafClient(string host, string userToken)
+        {
+            _nanoleafHttpClient = new NanoleafHttpClient(host, userToken);
+        }*/
+
+        public void Authorize(string token)
+        {
+            _nanoleafHttpClient.AuthorizeRequests(token);
+        }
+
+        public async Task<Info> GetInfoAsync()
         {
             var response = await _nanoleafHttpClient.SendGetRequest();
             Info info = JsonConvert.DeserializeObject<Info>(response);
@@ -30,9 +43,26 @@ namespace Nanoleaf.Client
             return info;
         }
 
+        #region User
+
+        public async Task<UserToken> AddUserAsync()
+        {
+            var response = await _nanoleafHttpClient.AddUserRequestAsync();
+            var token = JsonConvert.DeserializeObject<UserToken>(response);
+
+            return token;
+        }
+
+        public async Task DeleteUserAsync(string userToken)
+        {
+            await _nanoleafHttpClient.DeleteUserRequest(userToken + "/");
+        }
+
+        #endregion
+
         #region Power
 
-        public async Task<bool> GetPowerStatus()
+        public async Task<bool> GetPowerStatusAsync()
         {
             var response = await _nanoleafHttpClient.SendGetRequest("state/on");
             PowerStatus powerStatus = JsonConvert.DeserializeObject<PowerStatus>(response);
@@ -40,7 +70,7 @@ namespace Nanoleaf.Client
             return powerStatus.Value;
         }
 
-        public async Task TurnOn()
+        public async Task TurnOnAsync()
         {
             var request = new OnOffRequest(true);
             string json = JsonConvert.SerializeObject(request);
@@ -48,7 +78,7 @@ namespace Nanoleaf.Client
             await _nanoleafHttpClient.SendPutRequest(json, "state/");
         }
 
-        public async Task TurnOff()
+        public async Task TurnOffAsync()
         {
             var request = new OnOffRequest(false);
             string json = JsonConvert.SerializeObject(request);
@@ -60,7 +90,7 @@ namespace Nanoleaf.Client
 
         #region Brightness
 
-        public async Task<Brightness> GetBrightnessInfo()
+        public async Task<Brightness> GetBrightnessInfoAsync()
         {
             var response = await _nanoleafHttpClient.SendGetRequest("state/brightness");
             Brightness brightnessInfo = JsonConvert.DeserializeObject<Brightness>(response);
@@ -68,7 +98,7 @@ namespace Nanoleaf.Client
             return brightnessInfo;
         }
 
-        public async Task<int> GetBrightness()
+        public async Task<int> GetBrightnessAsync()
         {
             var response = await _nanoleafHttpClient.SendGetRequest("state/brightness/value");
             int brightnessInfo = JsonConvert.DeserializeObject<int>(response);
@@ -76,7 +106,7 @@ namespace Nanoleaf.Client
             return brightnessInfo;
         }
 
-        public async Task<int> GetBrightnessMaxValue()
+        public async Task<int> GetBrightnessMaxValueAsync()
         {
             var response = await _nanoleafHttpClient.SendGetRequest("state/brightness/max");
             int brightnessMaxValue = JsonConvert.DeserializeObject<int>(response);
@@ -84,7 +114,7 @@ namespace Nanoleaf.Client
             return brightnessMaxValue;
         }
 
-        public async Task<int> GetBrightnessMinValue()
+        public async Task<int> GetBrightnessMinValueAsync()
         {
             var response = await _nanoleafHttpClient.SendGetRequest("state/brightness/min");
             int brightnessMinValue = JsonConvert.DeserializeObject<int>(response);
@@ -92,7 +122,7 @@ namespace Nanoleaf.Client
             return brightnessMinValue;
         }
 
-        public async Task SetBrightness(int targetBrightness, int time = 0)
+        public async Task SetBrightnessAsync(int targetBrightness, int time = 0)
         {
             var request = new SetBrightnessModel(targetBrightness, time);
             string json = Serializer.Serialize(request);
@@ -100,7 +130,7 @@ namespace Nanoleaf.Client
             await _nanoleafHttpClient.SendPutRequest(json, "state/");
         }
 
-        public async Task RaiseBrightness(int value)
+        public async Task RaiseBrightnessAsync(int value)
         {
             var request = new IncrementBrightnessModel(value);
             string json = Serializer.Serialize(request);
@@ -108,7 +138,7 @@ namespace Nanoleaf.Client
             await _nanoleafHttpClient.SendPutRequest(json, "state/");
         }
 
-        public async Task LowerBrightness(int value)
+        public async Task LowerBrightnessAsync(int value)
         {
             var request = new IncrementBrightnessModel(-value);
             string json = Serializer.Serialize(request);
@@ -120,7 +150,7 @@ namespace Nanoleaf.Client
 
         #region Hue
 
-        public async Task<Hue> GetHueInfo()
+        public async Task<Hue> GetHueInfoAsync()
         {
             var response = await _nanoleafHttpClient.SendGetRequest("state/hue");
             Hue hueInfo = JsonConvert.DeserializeObject<Hue>(response);
@@ -128,7 +158,7 @@ namespace Nanoleaf.Client
             return hueInfo;
         }
 
-        public async Task<int> GetHue()
+        public async Task<int> GetHueAsync()
         {
             var response = await _nanoleafHttpClient.SendGetRequest("state/hue/value");
             int hue = JsonConvert.DeserializeObject<int>(response);
@@ -136,7 +166,7 @@ namespace Nanoleaf.Client
             return hue;
         }
 
-        public async Task<int> GetHueMaxValue()
+        public async Task<int> GetHueMaxValueAsync()
         {
             var response = await _nanoleafHttpClient.SendGetRequest("state/hue/max");
             int hueMaxValue = JsonConvert.DeserializeObject<int>(response);
@@ -144,7 +174,7 @@ namespace Nanoleaf.Client
             return hueMaxValue;
         }
 
-        public async Task<int> GetHueMinValue()
+        public async Task<int> GetHueMinValueAsync()
         {
             var response = await _nanoleafHttpClient.SendGetRequest("state/hue/min");
             int hueMinValue = JsonConvert.DeserializeObject<int>(response);
@@ -152,7 +182,7 @@ namespace Nanoleaf.Client
             return hueMinValue;
         }
 
-        public async Task SetHue(int targetHue)
+        public async Task SetHueAsync(int targetHue)
         {
             var request = new SetHueModel(targetHue);
             string json = Serializer.Serialize(request);
@@ -160,7 +190,7 @@ namespace Nanoleaf.Client
             await _nanoleafHttpClient.SendPutRequest(json, "state/");
         }
 
-        public async Task RaiseHue(int value)
+        public async Task RaiseHueAsync(int value)
         {
             var request = new IncrementHueModel(value);
             string json = Serializer.Serialize(request);
@@ -168,7 +198,7 @@ namespace Nanoleaf.Client
             await _nanoleafHttpClient.SendPutRequest(json, "state/");
         }
 
-        public async Task LowerHue(int value)
+        public async Task LowerHueAsync(int value)
         {
             var request = new IncrementHueModel(-value);
             string json = Serializer.Serialize(request);
@@ -180,7 +210,7 @@ namespace Nanoleaf.Client
 
         #region Saturation
 
-        public async Task<Saturation> GetSaturationInfo()
+        public async Task<Saturation> GetSaturationInfoAsync()
         {
             var response = await _nanoleafHttpClient.SendGetRequest("state/sat");
             Saturation hueInfo = JsonConvert.DeserializeObject<Saturation>(response);
@@ -188,7 +218,7 @@ namespace Nanoleaf.Client
             return hueInfo;
         }
 
-        public async Task<int> GetSaturation()
+        public async Task<int> GetSaturationAsync()
         {
             var response = await _nanoleafHttpClient.SendGetRequest("state/sat/value");
             int saturation = JsonConvert.DeserializeObject<int>(response);
@@ -196,7 +226,7 @@ namespace Nanoleaf.Client
             return saturation;
         }
 
-        public async Task<int> GetSaturationMaxValue()
+        public async Task<int> GetSaturationMaxValueAsync()
         {
             var response = await _nanoleafHttpClient.SendGetRequest("state/sat/max");
             int saturationMaxValue = JsonConvert.DeserializeObject<int>(response);
@@ -204,7 +234,7 @@ namespace Nanoleaf.Client
             return saturationMaxValue;
         }
 
-        public async Task<int> GetSaturationMinValue()
+        public async Task<int> GetSaturationMinValueAsync()
         {
             var response = await _nanoleafHttpClient.SendGetRequest("state/sat/min");
             int saturationMinValue = JsonConvert.DeserializeObject<int>(response);
@@ -212,7 +242,7 @@ namespace Nanoleaf.Client
             return saturationMinValue;
         }
 
-        public async Task SetSaturation(int targetSat)
+        public async Task SetSaturationAsync(int targetSat)
         {
             var request = new SetSaturationModel(targetSat);
             string json = Serializer.Serialize(request);
@@ -220,7 +250,7 @@ namespace Nanoleaf.Client
             await _nanoleafHttpClient.SendPutRequest(json, "state/");
         }
 
-        public async Task RaiseSaturation(int value)
+        public async Task RaiseSaturationAsync(int value)
         {
             var request = new IncrementSaturationModel(value);
             string json = Serializer.Serialize(request);
@@ -228,7 +258,7 @@ namespace Nanoleaf.Client
             await _nanoleafHttpClient.SendPutRequest(json, "state/");
         }
 
-        public async Task LowerSaturation(int value)
+        public async Task LowerSaturationAsync(int value)
         {
             var request = new IncrementSaturationModel(-value);
             string json = Serializer.Serialize(request);
@@ -240,7 +270,7 @@ namespace Nanoleaf.Client
 
         #region Color Temperature
 
-        public async Task<ColorTemperature> GetTemperatureInfo()
+        public async Task<ColorTemperature> GetTemperatureInfoAsync()
         {
             var response = await _nanoleafHttpClient.SendGetRequest("state/ct");
             ColorTemperature colorTemperatureInfo = JsonConvert.DeserializeObject<ColorTemperature>(response);
@@ -248,7 +278,7 @@ namespace Nanoleaf.Client
             return colorTemperatureInfo;
         }
 
-        public async Task<int> GetColorTemperature()
+        public async Task<int> GetColorTemperatureAsync()
         {
             var response = await _nanoleafHttpClient.SendGetRequest("state/ct/value");
             int colorTemperature = JsonConvert.DeserializeObject<int>(response);
@@ -256,7 +286,7 @@ namespace Nanoleaf.Client
             return colorTemperature;
         }
 
-        public async Task<int> GetColorTemperatureMaxValue()
+        public async Task<int> GetColorTemperatureMaxValueAsync()
         {
             var response = await _nanoleafHttpClient.SendGetRequest("state/ct/max");
             int colorTemperatureMaxValue = JsonConvert.DeserializeObject<int>(response);
@@ -264,7 +294,7 @@ namespace Nanoleaf.Client
             return colorTemperatureMaxValue;
         }
 
-        public async Task<int> GetColorTemperatureMinValue()
+        public async Task<int> GetColorTemperatureMinValueAsync()
         {
             var response = await _nanoleafHttpClient.SendGetRequest("state/ct/min");
             int colorTemperatureMinValue = JsonConvert.DeserializeObject<int>(response);
@@ -272,7 +302,7 @@ namespace Nanoleaf.Client
             return colorTemperatureMinValue;
         }
 
-        public async Task SetColorTemperature(int targetCt)
+        public async Task SetColorTemperatureAsync(int targetCt)
         {
             var request = new SetColorTemperatureModel(targetCt);
             string json = Serializer.Serialize(request);
@@ -280,7 +310,7 @@ namespace Nanoleaf.Client
             await _nanoleafHttpClient.SendPutRequest(json, "state/");
         }
 
-        public async Task RaiseColorTemperature(int value)
+        public async Task RaiseColorTemperatureAsync(int value)
         {
             var request = new IncrementColorTemperatureModel(value);
             string json = Serializer.Serialize(request);
@@ -288,7 +318,7 @@ namespace Nanoleaf.Client
             await _nanoleafHttpClient.SendPutRequest(json, "state/");
         }
 
-        public async Task LowerColorTemperature(int value)
+        public async Task LowerColorTemperatureAsync(int value)
         {
             var request = new IncrementColorTemperatureModel(-value);
             string json = Serializer.Serialize(request);
@@ -298,17 +328,9 @@ namespace Nanoleaf.Client
 
         #endregion
 
-        public async Task<string> GetColorMode()
-        {
-            var response = await _nanoleafHttpClient.SendGetRequest("state/colorMode");
-            string colorMode = JsonConvert.DeserializeObject<string>(response);
-
-            return colorMode;
-        }
-
         #region Effects
 
-        public async Task<string> GetCurrentEffect()
+        public async Task<string> GetCurrentEffectAsync()
         {
             var response = await _nanoleafHttpClient.SendGetRequest("effects/select");
             string effect = JsonConvert.DeserializeObject<string>(response);
@@ -316,7 +338,7 @@ namespace Nanoleaf.Client
             return effect;
         }
 
-        public async Task<List<string>> GetEffects()
+        public async Task<List<string>> GetEffectsAsync()
         {
             var response = await _nanoleafHttpClient.SendGetRequest("effects/effectsList");
             List<string> effectsList = JsonConvert.DeserializeObject<List<string>>(response);
@@ -324,7 +346,7 @@ namespace Nanoleaf.Client
             return effectsList;
         }
 
-        public async Task SetEffect(string effectName)
+        public async Task SetEffectAsync(string effectName)
         {
             var request = new SelectEffectModel(effectName);
             string json = JsonConvert.SerializeObject(request);
@@ -333,5 +355,30 @@ namespace Nanoleaf.Client
         }
 
         #endregion
+
+        public async Task<string> GetColorModeAsync()
+        {
+            var response = await _nanoleafHttpClient.SendGetRequest("state/colorMode");
+            string colorMode = JsonConvert.DeserializeObject<string>(response);
+
+            return colorMode;
+        }
+
+        public async Task SetHsvAsync(int h, int s, int v)
+        {
+            var request = new HsvRequest(h, s, v);
+            string json = JsonConvert.SerializeObject(request);
+
+            await _nanoleafHttpClient.SendPutRequest(json, "state/");
+        }
+
+        public async Task SetRgbAsync(int r, int g, int b)
+        {
+            var hsv = ColorConverter.RgbToHsv(r, g, b);
+            var request = new HsvRequest(hsv.H, hsv.S, hsv.V);
+            string json = JsonConvert.SerializeObject(request);
+
+            await _nanoleafHttpClient.SendPutRequest(json, "state/");
+        }
     }
 }

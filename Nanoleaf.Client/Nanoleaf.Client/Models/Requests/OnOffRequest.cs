@@ -2,12 +2,9 @@
 
 namespace Nanoleaf.Client.Models
 {
-    public class OnOffRequest
+    internal class OnOffRequest
     {
-        public OnOffRequest(bool value)
-        {
-            Value = value;
-        }
+        public OnOffRequest(bool value) => Value = value;
 
         [JsonProperty("on")]
         public bool Value { get; }
