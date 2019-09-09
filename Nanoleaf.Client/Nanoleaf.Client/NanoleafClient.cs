@@ -35,10 +35,15 @@ namespace Nanoleaf.Client
             _nanoleafHttpClient.AuthorizeRequests(token);
         }
 
+        /// <summary>Gets nanoleaf information.</summary>
+        /// <returns>
+        ///   <para>A task that represents the asynchronous operation</para>
+        ///   <para>Task result contains Nanoleaf device information.</para>
+        /// </returns>
         public async Task<Info> GetInfoAsync()
         {
             var response = await _nanoleafHttpClient.SendGetRequest();
-            Info info = JsonConvert.DeserializeObject<Info>(response);
+            var info = JsonConvert.DeserializeObject<Info>(response);
 
             return info;
         }
@@ -53,6 +58,8 @@ namespace Nanoleaf.Client
             return token;
         }
 
+        /// <summary>Deletes the user asynchronous.</summary>
+        /// <param name="userToken">The user token.</param>
         public async Task DeleteUserAsync(string userToken)
         {
             await _nanoleafHttpClient.DeleteUserRequest(userToken + "/");

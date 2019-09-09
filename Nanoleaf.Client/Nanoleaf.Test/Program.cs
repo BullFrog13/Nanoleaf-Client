@@ -21,6 +21,8 @@ namespace Nanoleaf.Test
 
             var test = nanoleaf.GetEffectsAsync().Result;
 
+            var test1 = nanoleaf.GetInfoAsync();
+
             foreach (var action in test)
             {
                 Console.WriteLine(action);

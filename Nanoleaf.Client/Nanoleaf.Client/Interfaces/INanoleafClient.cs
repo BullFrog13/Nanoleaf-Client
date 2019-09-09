@@ -6,12 +6,21 @@ namespace Nanoleaf.Client.Interfaces
 {
     public interface INanoleafClient
     {
+        /// <summary>Gets nanoleaf information.</summary>
+        /// <returns>
+        ///   <para>A task that represents the asynchronous operation. Task result contains Nanoleaf device information.</para>
+        /// </returns>
         Task<Info> GetInfoAsync();
 
+        /// <summary>  Adds the user asynchronous.</summary>
+        /// <returns>The task object representing the asynchronous operation.
+        /// The task result contains a User Token.</returns>
         Task<UserToken> AddUserAsync();
 
         void Authorize(string token);
 
+        /// <summary>Deletes the user asynchronous.</summary>
+        /// <param name="userToken">The user token.</param>
         Task DeleteUserAsync(string userToken);
 
         #region Power
