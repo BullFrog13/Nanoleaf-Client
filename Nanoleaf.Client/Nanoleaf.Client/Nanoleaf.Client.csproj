@@ -1,9 +1,9 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
-    <Version>1.1.4</Version>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>1.1.6</Version>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <Description>A cross-platform library that takes advantage of Nanoleaf API.</Description>
     <PackageProjectUrl>https://github.com/BullFrog13/Nanoleaf-Client</PackageProjectUrl>
     <RepositoryUrl>https://github.com/BullFrog13/Nanoleaf-Client</RepositoryUrl>
@@ -12,6 +12,9 @@
     <PackageId>Nanoleaf.Core</PackageId>
     <Authors>Tkachenko Yevgeniy</Authors>
     <Product>Nanoleaf.Core</Product>
+    <AssemblyVersion>1.1.6.0</AssemblyVersion>
+    <FileVersion>1.1.6.0</FileVersion>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>
