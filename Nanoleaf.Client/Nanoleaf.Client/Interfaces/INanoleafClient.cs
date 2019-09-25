@@ -15,13 +15,13 @@ namespace Nanoleaf.Client.Interfaces
         /// <summary>  Adds the user asynchronous.</summary>
         /// <returns>The task object representing the asynchronous operation.
         /// The task result contains a User Token.</returns>
-        Task<UserToken> AddUserAsync();
+        Task<UserToken> CreateTokenAsync();
 
         void Authorize(string token);
 
         /// <summary>Deletes the user asynchronous.</summary>
         /// <param name="userToken">The user token.</param>
-        Task DeleteUserAsync(string userToken);
+        Task DeleteTokenAsync(string userToken);
 
         #region Power
 

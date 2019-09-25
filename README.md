@@ -1,26 +1,108 @@
 # Nanoleaf-Client
 
-Open source library for communication with your Nanoleaf Aurora.
-This library is available via NuGet package and supports only .NET Core projects. Library covers all basic Nanoleaf API calls. You can get the info of your device. This library is a part of a bigger infrastructure of other Home devices. Yeelight striplight support will arrive by the end of May 2018.
+A .NET Core library library for accessing the [RESTful Nanoleaf OpenAPI][1] over HTTP.
 
-# Nuget reference
+[Nuget][2]
 
-You can find Nuget here https://www.nuget.org/packages/Nanoleaf.Core/
+# Usage
 
-# How to use?
+###Discover Nanoleaf Device
 
+This is a convenient way to get Nanoleaf information.
+Before running the command make sure Nanoleaf is plugged-in and connected to WiFi.
+
+```c#
+var nanoleafDiscovery = new NanoleafDiscovery();
+var request = new NanoleafDiscoveryRequest
+{
+	ST = SearchTarget.Nanoleaf
+};
+
+var discoveredNanoleafs = nanoleafDiscovery.DiscoverNanoleafs(request);
+var nanoleaf = discoveredNanoleafs.FirstOrDefault();
 ```
+
+### Get authorization token
+
+A user is authorized to access the OpenAPI if they can demonstrate physical access of Panels.
+This is achieved by: Holding the on-off button down for 5-7 seconds until the LED starts flashing in a pattern
+
+Run the following code within 30 seconds of activating pairing. The response is a randomly generated auth token.
+```c#
+var token = await nanoleaf.CreateTokenAsync();
+```
+
+### Token authorization
+
+Use the token to authorize.
+
+```c#
+await nanoleaf?.AuthorizeAsync(token);
+```
+
+### Alternative way to access client
+
+Provided that you know your local device IP and already have a user token.
+```c#
 var client = new NanoleafClient("http://<your_device_ip>:16021", "<USER_TOKEN>");
 ```
 
-# Disclaimer
+### Turn On/Off
 
-Library is still in WIP state. You might experience bugs.
-I hope you enjoy my work and I would appreciate any comments regarding my work.
-If there are any issues please open an issue.
+```c#
+await nanoleaf.TurnOnAsync();
 
-# TODO
+Thread.Wait(5000);
 
-1. Implement Error HttpCode handling
-2. Add Nanoleaf Discovery (DONE)
-3. Add support for new users
+await nanoleaf.TurnOffAsync();
+```
+
+### Get Power Status
+
+```c#
+powerStatus = await nanoleaf.GetPowerStatusAsync();
+```
+
+### Get General Information and State
+
+Includes name, serial number, manufacturer, firmware version, model, state and effects
+
+```c#
+var info = await nanoleaf.GetInfoAsync();
+```
+
+### Get Brightness
+
+```c#
+var brightness = await nanoleaf.GetBrightnessAsync();
+```
+
+### Get Brightness with Max/Min Values
+
+```c#
+var brightness = await nanoleaf.GetBrightnessInfoAsync();
+```
+
+### Set Brightness
+
+targetBrightness must be from 0 to 100
+time is a brightness transfer duration
+
+```c#
+await nanoleaf.SetBrightnessAsync(targetBrightness: 100, time: 1000);
+```
+
+### Raise Brightness
+
+```c#
+await nanoleaf.RaiseBrightnessAsync(20);
+```
+
+### Lower Brghtness
+
+```c#
+await nanoleaf.LowerBrightnessAsync(5);
+```
+
+[1]: https://forum.nanoleaf.me/docs/openapi
+[2]: https://nuget.org/packages/Nanoleaf.Core

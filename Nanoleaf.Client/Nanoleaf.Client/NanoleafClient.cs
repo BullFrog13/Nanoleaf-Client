@@ -19,7 +19,6 @@ namespace Nanoleaf.Client
     {
         private readonly NanoleafHttpClient _nanoleafHttpClient;
 
-
         public NanoleafClient(string host)
         {
             _nanoleafHttpClient = new NanoleafHttpClient(host);
@@ -50,7 +49,7 @@ namespace Nanoleaf.Client
 
         #region User
 
-        public async Task<UserToken> AddUserAsync()
+        public async Task<UserToken> CreateTokenAsync()
         {
             var response = await _nanoleafHttpClient.AddUserRequestAsync();
             var token = JsonConvert.DeserializeObject<UserToken>(response);
@@ -58,9 +57,9 @@ namespace Nanoleaf.Client
             return token;
         }
 
-        /// <summary>Deletes the user asynchronous.</summary>
+        /// <summary>Deletes the token asynchronous.</summary>
         /// <param name="userToken">The user token.</param>
-        public async Task DeleteUserAsync(string userToken)
+        public async Task DeleteTokenAsync(string userToken)
         {
             await _nanoleafHttpClient.DeleteUserRequest(userToken + "/");
         }
