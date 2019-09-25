@@ -4,7 +4,8 @@ A .NET Core library library for accessing the [RESTful Nanoleaf OpenAPI][1] over
 
 [Nuget][2]
 
-# Usage
+Usage
+=====
 
 ###Discover Nanoleaf Device
 
