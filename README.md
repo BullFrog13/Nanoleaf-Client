@@ -33,6 +33,8 @@ Run the following code within 30 seconds of activating pairing. The response is 
 var token = await nanoleaf.CreateTokenAsync();
 ```
 
+You can reuse this token in the following sessions, just make sure to authorize client with it.
+
 ### Token authorization
 
 Use the token to authorize.
