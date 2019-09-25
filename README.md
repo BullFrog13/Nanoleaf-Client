@@ -4,10 +4,9 @@ A .NET Core library library for accessing the [RESTful Nanoleaf OpenAPI][1] over
 
 [Nuget][2]
 
-Usage
-=====
+## Usage
 
-###Discover Nanoleaf Device
+### Discover Nanoleaf Device
 
 This is a convenient way to get Nanoleaf information.
 Before running the command make sure Nanoleaf is plugged-in and connected to WiFi.
