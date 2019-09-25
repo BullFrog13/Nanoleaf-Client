@@ -8,7 +8,8 @@ A .NET Core library library for accessing the [RESTful Nanoleaf OpenAPI][1] over
 
 ### Discover Nanoleaf Device
 
-This is a convenient way to get Nanoleaf information.
+This is a convenient way to discover Nanoleaf in local network.
+
 Before running the command make sure Nanoleaf is plugged-in and connected to WiFi.
 
 ```c#
