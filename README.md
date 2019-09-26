@@ -46,12 +46,12 @@ await nanoleaf?.AuthorizeAsync(token);
 
 Provided that you know your local device IP and already have a user token.
 ```c#
-var client = new NanoleafClient("<your_device_local_ip>", "<USER_TOKEN>");
+var client = new NanoleafClient("<local_device_ip>", "<USER_TOKEN>");
 ```
 
 Disposable
 ```c#
-using(var client = new NanoleafClient("<your_device_ip>", "<USER_TOKEN>")
+using(var client = new NanoleafClient("<local_device_ip>", "<USER_TOKEN>")
 {
 	// code
 }
