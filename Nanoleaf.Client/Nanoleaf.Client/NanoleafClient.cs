@@ -24,10 +24,10 @@ namespace Nanoleaf.Client
             _nanoleafHttpClient = new NanoleafHttpClient(host);
         }
 
-        /*public NanoleafClient(string host, string userToken)
+        public NanoleafClient(string host, string userToken)
         {
             _nanoleafHttpClient = new NanoleafHttpClient(host, userToken);
-        }*/
+        }
 
         /// <inheritdoc/>
         public void Authorize(string token)

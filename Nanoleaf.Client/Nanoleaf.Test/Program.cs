@@ -33,10 +33,10 @@ namespace Nanoleaf.Test
 
             Console.WriteLine(test1);
 
-            //foreach (var action in test)
-            //{
-            //    Console.WriteLine(action);
-            //}
+            foreach (var action in test)
+            {
+                Console.WriteLine(action);
+            }
 
             Console.ReadKey();
         }
