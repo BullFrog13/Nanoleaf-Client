@@ -15,11 +15,10 @@ namespace Nanoleaf.Client.Interfaces
         /// <returns>Nanoleaf device information.</returns>
         Task<Info> GetInfoAsync();
 
-        /// <summary>
-        /// Adds the user
-        /// </summary>
-        /// <returns>User Token.</returns>
-        Task<UserToken> AddUserAsync();
+        /// <summary>  Adds the user asynchronous.</summary>
+        /// <returns>The task object representing the asynchronous operation.
+        /// The task result contains a User Token.</returns>
+        Task<UserToken> CreateTokenAsync();
 
         /// <summary>
         /// Authorize all following request for this device.
@@ -28,8 +27,8 @@ namespace Nanoleaf.Client.Interfaces
         void Authorize(string token);
 
         /// <summary>Deletes the user asynchronous.</summary>
-        /// <param name="userToken">User token.</param>
-        Task DeleteUserAsync(string userToken);
+        /// <param name="userToken">The user token.</param>
+        Task DeleteTokenAsync(string userToken);
 
         #region Power
 
