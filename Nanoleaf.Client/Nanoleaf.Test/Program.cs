@@ -19,14 +19,24 @@ namespace Nanoleaf.Test
             var nanoleaf = discoveredNanoleafs.FirstOrDefault();
             nanoleaf?.Authorize("qEQ8ZLcPuOVesarDXIW6eGQQd1Hhn1d9");
 
-            var test = nanoleaf.GetEffectsAsync().Result;
-
-            var test1 = nanoleaf.GetInfoAsync();
-
-            foreach (var action in test)
+            var status = nanoleaf.GetPowerStatusAsync().Result;
+            if (status)
             {
-                Console.WriteLine(action);
+                nanoleaf.TurnOffAsync().Wait(1000);
             }
+            else
+            {
+                nanoleaf.TurnOnAsync().Wait(1000);
+            }
+
+            var test1 = nanoleaf.GetColorModeAsync().Result;
+
+            Console.WriteLine(test1);
+
+            //foreach (var action in test)
+            //{
+            //    Console.WriteLine(action);
+            //}
 
             Console.ReadKey();
         }

@@ -1,12 +1,13 @@
 ﻿using Newtonsoft.Json;
 
-namespace Nanoleaf.Client.Models
+namespace Nanoleaf.Client.Models.Requests
 {
+    [JsonObject(Title = "on")]
     internal class OnOffRequest
     {
         public OnOffRequest(bool value) => Value = value;
 
-        [JsonProperty("on")]
+        [JsonProperty("value")]
         public bool Value { get; }
     }
 }
