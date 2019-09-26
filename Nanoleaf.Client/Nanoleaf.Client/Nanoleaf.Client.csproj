@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
-    <Version>1.1.6.3</Version>
+    <Version>1.1.6.4</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>A cross-platform library for Nanoleaf API.</Description>
     <PackageProjectUrl>https://github.com/BullFrog13/Nanoleaf-Client</PackageProjectUrl>
@@ -10,14 +10,15 @@
     <PackageReleaseNotes>A cross-platform library for Nanoleaf API.</PackageReleaseNotes>
     <PackageTags>nanoleaf api core</PackageTags>
     <PackageId>Nanoleaf.Core</PackageId>
-    <Authors>Tkachenko Yevgeniy</Authors>
+    <Authors>BullFrog13</Authors>
     <Product>Nanoleaf.Core</Product>
-    <AssemblyVersion>1.1.6.3</AssemblyVersion>
-    <FileVersion>1.1.6.3</FileVersion>
+    <AssemblyVersion>1.1.6.4</AssemblyVersion>
+    <FileVersion>1.1.6.4</FileVersion>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryType>git</RepositoryType>
 	<GenerateDocumentationFile>true</GenerateDocumentationFile>
-	<PackageIconUrl>https://github.com/BullFrog13/Nanoleaf-Client/blob/master/logo_nanoleaf.jpg</PackageIconUrl>
+	<PackageIconUrl>https://github.com/BullFrog13/Nanoleaf-Client/blob/master/logo_nanoleaf1%20(2).jpg?raw=true</PackageIconUrl>
+	<Company>BullFrog13</Company>
   </PropertyGroup>
 
   <ItemGroup>
