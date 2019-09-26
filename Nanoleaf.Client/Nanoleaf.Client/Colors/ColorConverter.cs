@@ -1,4 +1,4 @@
-﻿using static System.Math;
+﻿using System;
 
 namespace Nanoleaf.Client.Colors
 {
@@ -10,11 +10,14 @@ namespace Nanoleaf.Client.Colors
             var gg = g / 255;
             var bb = b / 255;
 
-            var min = Min(rr, Min(gg, bb));
-            var max = Max(rr, Max(gg, bb));
+            var min = Math.Min(rr, Math.Min(gg, bb));
+            var max = Math.Max(rr, Math.Max(gg, bb));
             var chrome = max - min;
 
-            double H = 0, S = 0, V = 0;
+            double H = 0;
+            double S = 0;
+            double V = 0;
+
             V = max;
 
             if (chrome == 0) // for gray

@@ -2,6 +2,7 @@
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Nanoleaf.Client.Core;
 using Nanoleaf.Client.Exceptions;
 
 namespace Nanoleaf.Client
@@ -16,7 +17,7 @@ namespace Nanoleaf.Client
             _host = host;
             _token = token;
 
-            BaseAddress = new Uri(host + "/api/v1/");
+            BaseAddress = new Uri($"http://{host}:{Constants.NanoleafPort}/api/v1/");
         }
 
         public void AuthorizeRequests(string token)
@@ -27,6 +28,7 @@ namespace Nanoleaf.Client
         public async Task<string> SendGetRequest(string path = "")
         {
             var authorizedPath = _token + "/" + path;
+
             using (var responseMessage = await GetAsync(authorizedPath))
             {
                 if (!responseMessage.IsSuccessStatusCode)
@@ -41,13 +43,15 @@ namespace Nanoleaf.Client
         public async Task SendPutRequest(string json, string path = "")
         {
             var authorizedPath = _token + "/" + path;
-            HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            using (var responseMessage = await PutAsync(authorizedPath, content))
+            using (var content = new StringContent(json, Encoding.UTF8, "application/json"))
             {
-                if (!responseMessage.IsSuccessStatusCode)
+                using (var responseMessage = await PutAsync(authorizedPath, content))
                 {
-                    HandleNanoleafErrorStatusCodes(responseMessage);
+                    if (!responseMessage.IsSuccessStatusCode)
+                    {
+                        HandleNanoleafErrorStatusCodes(responseMessage);
+                    }
                 }
             }
         }
@@ -69,11 +73,9 @@ namespace Nanoleaf.Client
             }
         }
 
-        public async Task DeleteUserRequest(string path = "")
+        public async Task DeleteUserRequest(string token = "")
         {
-            BaseAddress = new Uri(_host + "/api/v1/");
-
-            using (var responseMessage = await DeleteAsync(path))
+            using (var responseMessage = await DeleteAsync(token))
             {
                 if (!responseMessage.IsSuccessStatusCode)
                 {
@@ -95,12 +97,11 @@ namespace Nanoleaf.Client
                 case 404:
                     throw new NanoleafResourceNotFoundException($"Error 404: Resource not found! Request Uri: {responseMessage.RequestMessage.RequestUri.AbsoluteUri}");
                 case 422:
-                    throw new NanoleafHttpException("Error 422: Unprocessible Entity");
+                    throw new NanoleafHttpException("Error 422: Unprocessable Entity");
                 case 500:
                     throw new NanoleafHttpException("Error 500: Internal Server Error");
                 default:
-                    throw new NanoleafHttpException("ERROR! UNKNOWN ERROR " + (int)responseMessage.StatusCode
-                                                                            + ". Please post an issue on the GitHub page: https://github.com/software-2/nanoleaf/issues");
+                    throw new NanoleafHttpException("ERROR! UNKNOWN ERROR " + (int)responseMessage.StatusCode);
             }
         }
     }

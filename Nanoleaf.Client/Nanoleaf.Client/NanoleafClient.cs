@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Nanoleaf.Client.Colors;
 using Nanoleaf.Client.Helpers;
@@ -17,6 +18,7 @@ namespace Nanoleaf.Client
     /// <inheritdoc/>
     public class NanoleafClient : INanoleafClient
     {
+        private bool _isDisposed = false;
         private readonly NanoleafHttpClient _nanoleafHttpClient;
 
         public NanoleafClient(string host)
@@ -419,6 +421,25 @@ namespace Nanoleaf.Client
             var json = JsonConvert.SerializeObject(request);
 
             await _nanoleafHttpClient.SendPutRequest(json, "state/");
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_isDisposed)
+            {
+                if (disposing)
+                {
+                    _nanoleafHttpClient.Dispose();
+                }
+
+                _isDisposed = true;
+            }
+        }
+
+
+        public void Dispose()
+        {
+            Dispose(true);
         }
     }
 }

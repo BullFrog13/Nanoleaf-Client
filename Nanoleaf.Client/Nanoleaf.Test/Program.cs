@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using DeviceDiscovery.Models;
+using Nanoleaf.Client;
 using Nanoleaf.Client.Discovery;
 
 namespace Nanoleaf.Test
@@ -9,29 +10,28 @@ namespace Nanoleaf.Test
     {
         static void Main()
         {
-            var nanoleafDiscovery = new NanoleafDiscovery();
             var request = new NanoleafDiscoveryRequest
             {
                 ST = SearchTarget.Nanoleaf
             };
 
-            var discoveredNanoleafs = nanoleafDiscovery.DiscoverNanoleafs(request);
-            var nanoleaf = discoveredNanoleafs.FirstOrDefault();
-            nanoleaf?.Authorize("qEQ8ZLcPuOVesarDXIW6eGQQd1Hhn1d9");
-
-            var status = nanoleaf.GetPowerStatusAsync().Result;
-            if (status)
+            using (var nanoleafDiscovery = new NanoleafDiscovery())
             {
-                nanoleaf.TurnOffAsync().Wait(1000);
-            }
-            else
-            {
-                nanoleaf.TurnOnAsync().Wait(1000);
-            }
+                var discoveredNanoleafs = nanoleafDiscovery.DiscoverNanoleafs(request);
+                var nanoleaf = discoveredNanoleafs.FirstOrDefault();
+                nanoleaf?.Authorize("qEQ8ZLcPuOVesarDXIW6eGQQd1Hhn1d9");
 
-            var test1 = nanoleaf.GetColorModeAsync().Result;
+                var status = nanoleaf.GetPowerStatusAsync().Result;
 
-            Console.WriteLine(test1);
+                if (status)
+                {
+                    nanoleaf.TurnOffAsync().Wait(1000);
+                }
+                else
+                {
+                    nanoleaf.TurnOnAsync().Wait(1000);
+                }
+            }
 
             Console.ReadKey();
         }

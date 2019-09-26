@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Nanoleaf.Client.Models.Responses;
 
@@ -7,7 +8,7 @@ namespace Nanoleaf.Client.Interfaces
     /// <summary>
     /// Nanoleaf API interface
     /// </summary>
-    public interface INanoleafClient
+    public interface INanoleafClient : IDisposable
     {
         /// <summary>
         /// Gets nanoleaf information.
@@ -238,7 +239,7 @@ namespace Nanoleaf.Client.Interfaces
         #endregion
 
         /// <summary>
-        /// Get cu
+        /// Get color mode
         /// </summary>
         /// <returns></returns>
         Task<string> GetColorModeAsync();
@@ -267,7 +268,7 @@ namespace Nanoleaf.Client.Interfaces
         #endregion
 
         /// <summary>
-        /// 
+        /// Set color using Hsv
         /// </summary>
         /// <param name="h"></param>
         /// <param name="s"></param>
@@ -276,7 +277,7 @@ namespace Nanoleaf.Client.Interfaces
         Task SetHsvAsync(int h, int s, int v);
 
         /// <summary>
-        /// 
+        /// Set color using Rgb
         /// </summary>
         /// <param name="r"></param>
         /// <param name="g"></param>
