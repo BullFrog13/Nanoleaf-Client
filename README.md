@@ -1,9 +1,9 @@
 # [Logo](https://github.com/BullFrog13/Nanoleaf-Client/blob/master/nano1.png)Nanoleaf-Client
 
-[![NuGet](https://img.shields.io/nuget/v/Nanoleaf.Core)](2)
-A .NET Core library library for accessing the [RESTful Nanoleaf OpenAPI][1] over HTTP.
+[![NuGet](https://img.shields.io/nuget/v/Nanoleaf.Core)](https://nuget.org/packages/Nanoleaf.Core)
 
-[Nuget][2]
+
+A .NET Core library library for accessing the [RESTful Nanoleaf OpenAPI][1] over HTTP.
 
 ## Usage
 
@@ -116,4 +116,3 @@ await nanoleaf.LowerBrightnessAsync(5);
 ```
 
 [1]: https://forum.nanoleaf.me/docs/openapi
-[2]: https://nuget.org/packages/Nanoleaf.Core
