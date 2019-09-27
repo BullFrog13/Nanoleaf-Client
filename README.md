@@ -1,4 +1,4 @@
-# !<img src="https://github.com/BullFrog13/Nanoleaf-Client/blob/master/nano1.png" width="35" height="35"> Nanoleaf.Core
+# <img src="https://github.com/BullFrog13/Nanoleaf-Client/blob/master/nano1.png" width="50" height="50"> Nanoleaf.Core
 
 [![NuGet](https://img.shields.io/nuget/v/Nanoleaf.Core)](https://nuget.org/packages/Nanoleaf.Core)
 
