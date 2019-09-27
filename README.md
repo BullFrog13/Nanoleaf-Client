@@ -1,4 +1,4 @@
-# <img src="https://github.com/BullFrog13/Nanoleaf-Client/blob/master/nano1.png" width="50" height="50"> Nanoleaf.Core
+# <img src="https://github.com/BullFrog13/Nanoleaf-Client/blob/master/nano1.png" width="60" height="60">
 
 [![NuGet](https://img.shields.io/nuget/v/Nanoleaf.Core)](https://nuget.org/packages/Nanoleaf.Core)
 
@@ -97,7 +97,7 @@ var brightness = await nanoleaf.GetBrightnessInfoAsync();
 ### Set Brightness
 
 targetBrightness must be from 0 to 100
-time is a brightness transfer duration
+time is a brightness transition time
 
 ```c#
 await nanoleaf.SetBrightnessAsync(targetBrightness: 100, time: 1000);
