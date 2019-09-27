@@ -15,8 +15,8 @@ namespace Nanoleaf.Client.Colors
             var chrome = max - min;
 
             double H = 0;
-            double S = 0;
-            double V = 0;
+            double S;
+            double V;
 
             V = max;
 

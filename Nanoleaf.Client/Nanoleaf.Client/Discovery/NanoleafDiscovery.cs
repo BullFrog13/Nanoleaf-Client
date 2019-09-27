@@ -7,10 +7,10 @@ namespace Nanoleaf.Client.Discovery
 {
     public class NanoleafDiscovery : IDisposable
     {
-        private bool _isDisposed = false;
+        private bool _isDisposed;
         private readonly DiscoveryService _discoveryService = new DiscoveryService();
 
-        public List<NanoleafClient> NanoleafClients { get; set; } = new List<NanoleafClient>();
+        public List<NanoleafClient> NanoleafClients { get; } = new List<NanoleafClient>();
 
         public List<NanoleafClient> DiscoverNanoleafs(NanoleafDiscoveryRequest discoveryRequest)
         {

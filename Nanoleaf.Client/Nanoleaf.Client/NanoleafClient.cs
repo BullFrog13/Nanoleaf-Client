@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Nanoleaf.Client.Colors;
 using Nanoleaf.Client.Helpers;
@@ -18,7 +17,7 @@ namespace Nanoleaf.Client
     /// <inheritdoc/>
     public class NanoleafClient : INanoleafClient
     {
-        private bool _isDisposed = false;
+        private bool _isDisposed;
         private readonly NanoleafHttpClient _nanoleafHttpClient;
 
         public NanoleafClient(string host)
@@ -435,7 +434,6 @@ namespace Nanoleaf.Client
                 _isDisposed = true;
             }
         }
-
 
         public void Dispose()
         {

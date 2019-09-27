@@ -4,7 +4,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Nanoleaf.Client.Helpers
 {
-    internal class Serializer
+    internal static class Serializer
     {
         public static string Serialize<T>(T o)
         {

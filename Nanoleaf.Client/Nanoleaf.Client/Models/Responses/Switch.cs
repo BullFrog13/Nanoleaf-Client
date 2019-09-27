@@ -4,7 +4,7 @@ namespace Nanoleaf.Client.Models.Responses
 {
     public class Switch
     {
-        [JsonProperty("on")]
-        public bool SwitchedOn { get; set; }
+        [JsonProperty("value")]
+        public bool Power { get; set; }
     }
 }

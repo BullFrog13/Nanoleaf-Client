@@ -9,12 +9,10 @@ namespace Nanoleaf.Client
 {
     internal class NanoleafHttpClient : HttpClient
     {
-        private readonly string _host;
         private string _token;
 
         public NanoleafHttpClient(string host, string token = "")
         {
-            _host = host;
             _token = token;
 
             BaseAddress = new Uri($"http://{host}:{Constants.NanoleafPort}/api/v1/");
@@ -63,10 +61,6 @@ namespace Nanoleaf.Client
                 if (!responseMessage.IsSuccessStatusCode)
                 {
                     HandleNanoleafErrorStatusCodes(responseMessage);
-                }
-                else
-                {
-                    //new AuthManager()
                 }
 
                 return await responseMessage.Content.ReadAsStringAsync();

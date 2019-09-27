@@ -4,11 +4,11 @@ namespace Nanoleaf.Client.Colors
 {
     internal class Hsv
     {
-        public int H { get; set; }
+        public int H { get; }
 
-        public int S { get; set; }
+        public int S { get; }
 
-        public int V { get; set; }
+        public int V { get; }
 
         public Hsv(double h, double s, double v)
         {
