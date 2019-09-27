@@ -1,6 +1,6 @@
 # [Logo](https://github.com/BullFrog13/Nanoleaf-Client/blob/master/nano1.png)Nanoleaf-Client
 
-[!NuGet](https://img.shields.io/nuget/v/Nanoleaf.Core)](2)
+[![NuGet](https://img.shields.io/nuget/v/Nanoleaf.Core)](2)
 A .NET Core library library for accessing the [RESTful Nanoleaf OpenAPI][1] over HTTP.
 
 [Nuget][2]
