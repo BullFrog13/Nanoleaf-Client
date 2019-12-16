@@ -20,7 +20,7 @@ namespace Nanoleaf.Client.Discovery
 
             foreach (MSearchResponse device in nanoleafDevices)
             {
-                NanoleafClients.Add(new NanoleafClient(device.Location.OriginalString));
+                NanoleafClients.Add(new NanoleafClient(device.Location.Host));
             }
 
             return NanoleafClients;

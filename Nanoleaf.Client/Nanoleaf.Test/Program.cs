@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using DeviceDiscovery.Models;
 using Nanoleaf.Client;
 using Nanoleaf.Client.Discovery;
