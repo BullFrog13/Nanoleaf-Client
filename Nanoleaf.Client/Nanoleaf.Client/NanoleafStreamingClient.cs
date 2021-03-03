@@ -6,8 +6,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
-using ISocketLite.PCL.Exceptions;
-using SocketException = System.Net.Sockets.SocketException;
 
 namespace Nanoleaf.Client {
 	public class NanoleafStreamingClient : IDisposable {
