@@ -51,6 +51,18 @@ namespace Nanoleaf.Client
 
             return info;
         }
+        
+        /// <summary>
+        /// Retrieves the current panel layout.
+        /// Requires authorization.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<Layout> GetLayoutAsync() {
+            var response = await _nanoleafHttpClient.SendGetRequest("panelLayout/layout");
+            var layout = JsonConvert.DeserializeObject<Layout>(response);
+            return layout;
+        }
+
 
         #region User
 
@@ -86,17 +98,7 @@ namespace Nanoleaf.Client
             return powerStatus.Value;
         }
 
-        /// <summary>
-        /// Retrieves the current panel layout.
-        /// Requires authorization.
-        /// </summary>
-        /// <returns></returns>
-        public async Task<Layout> GetLayoutAsync() {
-            var response = await _nanoleafHttpClient.SendGetRequest("panelLayout/layout");
-            var layout = JsonConvert.DeserializeObject<Layout>(response);
-            return layout;
-        }
-
+        
         /// <inheritdoc/>
         public async Task TurnOnAsync()
         {
@@ -413,6 +415,17 @@ namespace Nanoleaf.Client
 
             await _nanoleafHttpClient.SendPutRequest(json, "effects/");
         }
+        
+        /// <inheritdoc/>
+        public async Task StartExternalAsync(string version="v2")
+        {
+            var request = new SelectEternalModel(version);
+            var json = JsonConvert.SerializeObject(request);
+
+            await _nanoleafHttpClient.SendPutRequest(json, "effects/");
+        }
+        
+        
 
         #endregion
 

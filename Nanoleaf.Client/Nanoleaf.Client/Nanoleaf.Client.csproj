@@ -19,7 +19,7 @@
 	<GenerateDocumentationFile>true</GenerateDocumentationFile>
 	<PackageIconUrl>https://github.com/BullFrog13/Nanoleaf-Client/blob/master/nano1.png?raw=true</PackageIconUrl>
 	<Company>BullFrog13</Company>
-	<PackageVersion>1.1.7.2</PackageVersion>
+	<PackageVersion>1.1.7.3</PackageVersion>
   </PropertyGroup>
 
   <ItemGroup>
