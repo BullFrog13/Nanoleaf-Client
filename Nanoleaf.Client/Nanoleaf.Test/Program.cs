@@ -37,7 +37,7 @@ namespace Nanoleaf.Test
             {
                 client.Authorize("aDmIB12fYRH7WAOKrzt1ucEuaJWzltT3");
                 var res = client.GetInfoAsync().Result;
-                Console.WriteLine("Test: " + res.State.Switch.Power);
+                Console.WriteLine($"Test for {client.HostName}: " + res.State.Switch.Power);
             }
 
             Console.ReadKey();
