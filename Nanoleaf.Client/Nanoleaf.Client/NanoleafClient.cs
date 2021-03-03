@@ -19,17 +19,23 @@ namespace Nanoleaf.Client
     {
         private bool _isDisposed;
         private readonly NanoleafHttpClient _nanoleafHttpClient;
+        /// <summary>
+        /// Allow us to retrieve the device hostname for later
+        /// </summary>
+        public string HostName { get; }
 
-        public NanoleafClient(string host)
+        /// <summary>
+        /// Create a new nanoleaf client
+        /// </summary>
+        /// <param name="host">Hostname or IP address of nanoleaf device</param>
+        /// <param name="userToken">(Optional) User token to use if authorized</param>
+        /// <param name="client">(Optional) Used to pass a shared HttpClient</param>
+        public NanoleafClient(string host, string userToken = "", HttpClient client = null)
         {
-            _nanoleafHttpClient = new NanoleafHttpClient(host);
+            _nanoleafHttpClient = new NanoleafHttpClient(host, userToken, client);
+            HostName = host;
         }
-
-        public NanoleafClient(string host, string userToken)
-        {
-            _nanoleafHttpClient = new NanoleafHttpClient(host, userToken);
-        }
-
+        
         /// <inheritdoc/>
         public void Authorize(string token)
         {

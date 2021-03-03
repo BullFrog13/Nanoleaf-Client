@@ -7,15 +7,18 @@ using Nanoleaf.Client.Exceptions;
 
 namespace Nanoleaf.Client
 {
-    internal class NanoleafHttpClient : HttpClient
+    internal class NanoleafHttpClient : IDisposable
     {
         private string _token;
+        private readonly HttpClient _client;
+        private readonly bool _disposeClient;
 
-        public NanoleafHttpClient(string host, string token = "")
+        public NanoleafHttpClient(string host, string token = "", HttpClient client = null)
         {
             _token = token;
-
-            BaseAddress = new Uri($"http://{host}:{Constants.NanoleafPort}/api/v1/");
+            _client = client ?? new HttpClient();
+            if (client == null) _disposeClient = true;
+            _client.BaseAddress = new Uri($"http://{host}:{Constants.NanoleafPort}/api/v1/");
         }
 
         public void AuthorizeRequests(string token)
@@ -27,7 +30,7 @@ namespace Nanoleaf.Client
         {
             var authorizedPath = _token + "/" + path;
 
-            using (var responseMessage = await GetAsync(authorizedPath))
+            using (var responseMessage = await _client.GetAsync(authorizedPath))
             {
                 if (!responseMessage.IsSuccessStatusCode)
                 {
@@ -44,7 +47,7 @@ namespace Nanoleaf.Client
 
             using (var content = new StringContent(json, Encoding.UTF8, "application/json"))
             {
-                using (var responseMessage = await PutAsync(authorizedPath, content))
+                using (var responseMessage = await _client.PutAsync(authorizedPath, content))
                 {
                     if (!responseMessage.IsSuccessStatusCode)
                     {
@@ -56,7 +59,7 @@ namespace Nanoleaf.Client
 
         public async Task<string> AddUserRequestAsync()
         {
-            using (var responseMessage = await PostAsync("new/", null))
+            using (var responseMessage = await _client.PostAsync("new/", null))
             {
                 if (!responseMessage.IsSuccessStatusCode)
                 {
@@ -69,7 +72,7 @@ namespace Nanoleaf.Client
 
         public async Task DeleteUserRequest(string token = "")
         {
-            using (var responseMessage = await DeleteAsync(token))
+            using (var responseMessage = await _client.DeleteAsync(token))
             {
                 if (!responseMessage.IsSuccessStatusCode)
                 {
@@ -97,6 +100,10 @@ namespace Nanoleaf.Client
                 default:
                     throw new NanoleafHttpException("ERROR! UNKNOWN ERROR " + (int)responseMessage.StatusCode);
             }
+        }
+
+        public void Dispose() {
+            if (_disposeClient) _client.Dispose();
         }
     }
 }
