@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Nanoleaf.Client.Colors;
 using Nanoleaf.Client.Helpers;
@@ -53,6 +54,10 @@ namespace Nanoleaf.Client
 
         #region User
 
+        /// <summary>
+        /// Attempt to create a new user token object.
+        /// </summary>
+        /// <returns>New user token</returns>
         public async Task<UserToken> CreateTokenAsync()
         {
             var response = await _nanoleafHttpClient.AddUserRequestAsync();
@@ -79,6 +84,17 @@ namespace Nanoleaf.Client
             var powerStatus = JsonConvert.DeserializeObject<PowerStatus>(response);
 
             return powerStatus.Value;
+        }
+
+        /// <summary>
+        /// Retrieves the current panel layout.
+        /// Requires authorization.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<Layout> GetLayoutAsync() {
+            var response = await _nanoleafHttpClient.SendGetRequest("panelLayout/layout");
+            var layout = JsonConvert.DeserializeObject<Layout>(response);
+            return layout;
         }
 
         /// <inheritdoc/>
