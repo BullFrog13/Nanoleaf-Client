@@ -3,7 +3,7 @@
 [![NuGet](https://img.shields.io/nuget/v/Nanoleaf.Core)](https://nuget.org/packages/Nanoleaf.Core)
 
 
-A .NET Core library library for accessing the [RESTful Nanoleaf OpenAPI][1] over HTTP.
+A .NET Core library for accessing the [RESTful Nanoleaf OpenAPI][1] over HTTP.
 
 ## Usage
 
@@ -219,5 +219,4 @@ await nanoStream.SetColorAsync(allBlack, 500);
 
 ```
 
-
-[1]: https://forum.nanoleaf.me/docs/openapi
+https://forum.nanoleaf.me/docs/openapi
