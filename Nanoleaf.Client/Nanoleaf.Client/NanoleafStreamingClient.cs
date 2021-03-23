@@ -7,12 +7,17 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 
-namespace Nanoleaf.Client {
-	public class NanoleafStreamingClient : IDisposable {
+namespace Nanoleaf.Client 
+{
+	/// <summary>
+	/// Streaming client used for sending UDP color data to Nanoleaf Devices
+	/// </summary>
+	public class NanoleafStreamingClient : IDisposable
+	{
 		private readonly int _streamMode;
 		private readonly IPEndPoint _ipEndPoint;
 		private readonly UdpClient _sender;
-		private bool _disposeSender;
+		private readonly bool _disposeSender;
 
 		/// <summary>
 		/// Create a new nanoleaf streaming client
@@ -21,7 +26,8 @@ namespace Nanoleaf.Client {
 		/// <param name="streamMode">(Optional) Streaming mode supported by the device. See the nanoleaf documentation for more info.</param>
 		/// <param name="sender">(Optional) If specified, use a shared UdpClient. Be sure to disable blocking and
 		/// set the socket options to ReuseAddress, or you will encounter issues.</param>
-		public NanoleafStreamingClient(string target, int streamMode = 2, UdpClient sender = null) {
+		public NanoleafStreamingClient(string target, int streamMode = 2, UdpClient sender = null)
+		{
 			_ipEndPoint = Parse(target, 60222);
 
 			if (sender != null) {
@@ -43,7 +49,8 @@ namespace Nanoleaf.Client {
 		/// <param name="colors">A dictionary of int, color; where int is the Panel ID,
 		/// and color is a System.Drawing.Color to set. Use <see cref="M:NanoleafClient.GetLayoutAsync"/> to get layout info.</param>
 		/// <param name="fadeTime"></param>
-		public async Task SetColorAsync(Dictionary<int, Color> colors, int fadeTime = 0) {
+		public async Task SetColorAsync(Dictionary<int, Color> colors, int fadeTime = 0)
+		{
 			var byteString = new List<byte>();
 			if (_streamMode == 2) {
 				byteString.AddRange(PadInt(colors.Count));
@@ -73,19 +80,22 @@ namespace Nanoleaf.Client {
 			await SendUdpUnicastAsync(byteString.ToArray());
 		}
 		
-		private static byte[] PadInt(int toPad, int take = 2) {
+		private static byte[] PadInt(int toPad, int take = 2)
+		{
 			var intBytes = BitConverter.GetBytes(toPad);
 			Array.Reverse(intBytes);
 			intBytes = intBytes.Reverse().Take(take).Reverse().ToArray();
 			return intBytes;
 		}
 		
-		private static byte IntByte(int toByte, string format = "X2") {
+		private static byte IntByte(int toByte, string format = "X2")
+		{
 			var b = Convert.ToByte(toByte.ToString(format, CultureInfo.InvariantCulture), 16);
 			return b;
 		}
 		
-		private async Task SendUdpUnicastAsync(byte[] data) {
+		private async Task SendUdpUnicastAsync(byte[] data)
+		{
 			if (_ipEndPoint != null) {
 				await _sender.SendAsync(data, data.Length, _ipEndPoint);
 			} else {
@@ -93,7 +103,8 @@ namespace Nanoleaf.Client {
 			}
 		}
 		
-		private static IPEndPoint Parse(string endpoint, int portIn) {
+		private static IPEndPoint Parse(string endpoint, int portIn) 
+		{
             if (string.IsNullOrEmpty(endpoint)
                 || endpoint.Trim().Length == 0) {
                 throw new ArgumentException("Endpoint descriptor may not be empty.");
@@ -144,7 +155,8 @@ namespace Nanoleaf.Client {
             return new IPEndPoint(ipaddy, port);
         }
 		
-		private static int GetPort(string p) {
+		private static int GetPort(string p) 
+		{
 			int port;
 
 			if (!int.TryParse(p, out port)
@@ -156,7 +168,8 @@ namespace Nanoleaf.Client {
 			return port;
 		}
 
-		private static IPAddress GetIpFromHost(string p) {
+		private static IPAddress GetIpFromHost(string p) 
+		{
 			if (string.IsNullOrEmpty(p)) return null;
 			var hosts = Dns.GetHostAddresses(p);
 
@@ -167,7 +180,8 @@ namespace Nanoleaf.Client {
 		}
 
 
-		public void Dispose() {
+		public void Dispose() 
+		{
 			if (_disposeSender) _sender?.Dispose();
 		}
 	}
