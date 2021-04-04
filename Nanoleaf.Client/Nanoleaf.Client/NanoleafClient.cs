@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Nanoleaf.Client.Colors;
 using Nanoleaf.Client.Helpers;
@@ -19,17 +20,23 @@ namespace Nanoleaf.Client
     {
         private bool _isDisposed;
         private readonly NanoleafHttpClient _nanoleafHttpClient;
+        /// <summary>
+        /// Allow us to retrieve the device hostname for later
+        /// </summary>
+        public string HostName { get; }
 
-        public NanoleafClient(string host)
+        /// <summary>
+        /// Create a new nanoleaf client
+        /// </summary>
+        /// <param name="host">Hostname or IP address of nanoleaf device</param>
+        /// <param name="userToken">(Optional) User token to use if authorized</param>
+        /// <param name="client">(Optional) Used to pass a shared HttpClient</param>
+        public NanoleafClient(string host, string userToken = "", HttpClient client = null)
         {
-            _nanoleafHttpClient = new NanoleafHttpClient(host);
+            _nanoleafHttpClient = new NanoleafHttpClient(host, userToken, client);
+            HostName = host;
         }
-
-        public NanoleafClient(string host, string userToken)
-        {
-            _nanoleafHttpClient = new NanoleafHttpClient(host, userToken);
-        }
-
+        
         /// <inheritdoc/>
         public void Authorize(string token)
         {
@@ -44,9 +51,25 @@ namespace Nanoleaf.Client
 
             return info;
         }
+        
+        /// <summary>
+        /// Retrieves the current panel layout.
+        /// Requires authorization.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<Layout> GetLayoutAsync() {
+            var response = await _nanoleafHttpClient.SendGetRequest("panelLayout/layout");
+            var layout = JsonConvert.DeserializeObject<Layout>(response);
+            return layout;
+        }
+
 
         #region User
 
+        /// <summary>
+        /// Attempt to create a new user token object.
+        /// </summary>
+        /// <returns>New user token</returns>
         public async Task<UserToken> CreateTokenAsync()
         {
             var response = await _nanoleafHttpClient.AddUserRequestAsync();
@@ -75,6 +98,7 @@ namespace Nanoleaf.Client
             return powerStatus.Value;
         }
 
+        
         /// <inheritdoc/>
         public async Task TurnOnAsync()
         {
@@ -391,6 +415,17 @@ namespace Nanoleaf.Client
 
             await _nanoleafHttpClient.SendPutRequest(json, "effects/");
         }
+        
+        /// <inheritdoc/>
+        public async Task StartExternalAsync(string version="v2")
+        {
+            var request = new SelectEternalModel(version);
+            var json = JsonConvert.SerializeObject(request);
+
+            await _nanoleafHttpClient.SendPutRequest(json, "effects/");
+        }
+        
+        
 
         #endregion
 
