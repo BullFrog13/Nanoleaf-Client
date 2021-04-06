@@ -133,13 +133,13 @@ await nanoleaf.LowerBrightnessAsync(5);
 await nanoleaf.GetLayoutAsync();
 ```
 
-### Start Streaming
+### Start Streaming (v2.0)
 
 ```c#
 await nanoleaf.StartExternalAsync();
 ```
 
-## Create a Streaming Client
+## Create a Streaming Client (v2.0)
 
 Before sending data to your nanoleaf, you must first have authorized to your device.
 Once authorized, you should call "nanoleaf.StartExternalAsync()";
